@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title></title>
+	<meta charset="utf-8">
+    <link href="EndPages/css/main.css" rel="stylesheet">
+</head>
+<body>
+<!-- 品牌管理 -->
+            <div class="AccountManagement_c" id="NewsManagement_c">
+                <h3>品牌管理 
+                   
+                </h3>
+                <div class="list" id="release_news">
+                    <ul class="list_h">
+                        <li class="b80"><label>编辑品牌</label></li>
+                    </ul>
+                    <form method="post" action="/brandUpdate">
+                    <div class="list_b_c" id="release_news_in">
+                        <div class="release_news">
+                            <div class="news_title">
+                                <label class="text_center">品牌ID：</label>
+                                <input type="text" name="brand_id" th:value="${brand_id}" style="border: none;text-align: center;" readonly="true">
+                            </div>
+                        	<div class="news_title">
+                                <label class="text_center">品牌名称：</label>
+                                <input type="text"placeholder="填写品牌名称" name="name" th:value="${name}" style="border: none;text-align: center;">
+                            </div>
+                            <div class="news_title">
+                                <label class="text_center">负责人：</label>
+                                <input type="text"placeholder="填写负责人" name="contact" th:value="${contact}" style="border: none;text-align: center;">
+                            </div>
+                            <div class="news_title">
+                                <label class="text_center">联系电话：</label>
+                                <input type="text"placeholder="填写联系电话" name="phone" th:value="${phone}" style="border: none;text-align: center;">
+                            </div>
+                            <div class="news_title">
+                                <label class="text_center">供货地址：</label>
+                                <input type="text"placeholder="填写供货地址" name="address" th:value="${address}" style="border: none;text-align: center;">
+                            </div>
+                            <button type="submit" class="release_news_ok_btn text_center" style="margin-left: 250px" onclick="alert('保存成功!')">保存</button>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+</body>
+</html>

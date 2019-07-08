@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<link href="css/main.css" rel="stylesheet">
+
+</head>
+<body th:fragment="userlist">
+<!--<body>-->
+			<div class="AccountManagement_c " id="AccountManagement_c">
+
+                <h3>用户管理
+                    <div class="amcl fr">
+                        <form method="post" action="/userSearch">
+                            <input type="text" placeholder="用户名" class="fl" name="key"  value="用户名" onfocus="if (value =='用户名'){value =''}" onblur="if (value ==''){value='用户名'}" >
+                            <div class="search fl"><button type="submit" style="background-color: inherit;border: none"><img src="EndPages/images/search.png"></button></div>-
+                            <!--<div class="search fl"><img src="EndPages/images/search.png"></div>-->
+                        </form>
+                    </div>
+                </h3>
+
+                <div class="list">
+                    <ul class="list_h">
+                        <!--<li class="b20"><label><input type="checkbox" name=""><span>ID</span></label></li>-->
+                        <li class="b20"><label><span>ID</span></label></li>
+                        <!--<li class="b20"><input value="ID" style="border: none;text-align: center;background-color: rgb(241,244,249);" readonly="true"></li>-->
+                        <li class="b20"><label>姓名</label></li>
+                        <li class="b20"><label>性别</label></li>
+                        <!--<li class="b20"><label>邮箱</label></li>-->
+                        <li class="b20"><label>电话</label></li>
+                        <li class="b60"><label>操作</label></li>
+                    </ul>
+                    <div class="list_b_c">
+                        <!--<form method="post" action="/userDelete">-->
+                        <ul class="list_b" th:each="u:${userlist}">
+                            <!--<li class="b20"><label><input type="checkbox" name=""><span th:utext="${u.user_id}"></span></label></li>-->
+                            <!--<li class="b20"><input name="user_id" th:value="${u.user_id}" style="border: none;text-align: center;" readonly="true"></li>-->
+                            <li class="b20"><label><span th:utext="${u.user_id}"></span></label></li>
+                            <li class="b20" th:utext="'<label>'+${u.username}+'</label>'"></li>
+                            <li class="b20" th:utext="'<label>'+${u.sex}+'</label>'"></li>
+                            <!--<li class="b20" th:utext="'<label>'+${u.email}+'</label>'"></li>-->
+                            <li class="b20" th:utext="'<label>'+${u.phone}+'</label>'"></li>
+                            <li class="b60"> 
+                            		<!--<a href="/EndPages/userdetail.html" ><div class="edit_btn df_btn fl text_center">详情</div></a>-->
+                                    <a href="/userdetail" ><div class="edit_btn df_btn fl text_center">详情</div></a>
+                                    <!--<a href="/userdelete"><div class="delete_btn df_btn fl text_center">删除</div></>-->
+                                    <!--<button type="submit" class="delete_btn df_btn fl text_center">删除</button>-->
+                            </li>
+                        </ul>
+                        <!--</form>-->
+                    </div>
+
+                    <div class="pull_page">
+                        <div class="fl pull_page_up">上一页</div>
+                            <ul>
+                                <li class="on">1</li>
+                                <li>2</li>
+                                <li>3</li>
+                                <li>4</li>
+                                <li class="pull_page_df_btn">…</li>
+                                <li>12</li>
+                            </ul>
+                        <div class="fl pull_page_down">下一页</div>
+                    </div>
+
+                    
+                </div>
+            </div>
+
+
+            <!-- 弹窗 --...这之后的东西看似没用给删了>-->
+    <!-- 添加账户 -->
+    
+</body>
+<script type="text/javascript" src="EndPages/js/jquery.js"></script>
+<script type="text/javascript" src="EndPages/js/main.js"></script>
+</html>

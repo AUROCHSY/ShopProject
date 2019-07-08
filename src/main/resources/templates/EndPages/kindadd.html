@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title></title>
+	<meta charset="utf-8">
+    <link href="css/main.css" rel="stylesheet">
+</head>
+<body>
+<!-- 类型管理 -->
+            <div class="AccountManagement_c" id="NewsManagement_c">
+                <h3>类型管理
+                </h3>
+                <div class="list" id="release_news">
+                    <ul class="list_h">
+                        <li class="b80"><label>添加类型</label></li>
+                    </ul>
+
+                    <form method="post" action="/EndPages/categoryAdd">
+                        <div class="list_b_c" id="release_news_in">
+                            <div class="release_news">
+                                <div class="news_title">
+                                    <label class="text_center">一级类型：</label>
+                                    <input type="text" placeholder="填写类型名" name="fc_name" style="text-align: center;">
+                                </div>
+                                <div class="news_title">
+                                    <label class="text_center">二级类型：</label>
+                                    <input type="text" placeholder="填写类型名"  name="sc_name" style="text-align: center;">
+                                </div>
+                                <!--<div class="release_news_ok_btn text_center">保存</div>-->
+                                <input type="submit" class="release_news_ok_btn text_center" style="margin-left: 250px">
+                                <!--<div class="news_title">-->
+                                <div style="margin-left: 250px">
+                                    <input name="fc_response" th:value="${fc_response}" style="border: none;text-align: center;font-size: 16px; " readonly="true">
+                                </div>
+                                <div style="margin-left: 250px">
+                                    <input name="sc_response" th:value="${sc_response}" style="border: none;text-align: center;font-size: 16px ;" readonly="true">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+</body>
+
+</html>

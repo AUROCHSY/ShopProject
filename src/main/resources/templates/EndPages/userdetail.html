@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title></title>
+	<meta charset="utf-8">
+    <link href="EndPages/css/main.css" rel="stylesheet">
+    <link href="EndPages/css/yrh.css" rel="stylesheet">
+</head>
+<body>
+<!-- 用户管理 -->
+            <li class="AccountManagement_c" id="NewsManagement_c">
+                <h3>用户管理 
+                    <div class="amcl fr">
+                        <form method="post" action="/userSearch">
+                            <input type="text" placeholder="用户名" class="fl" name="key"  value="用户名" onfocus="if (value =='用户名'){value =''}" onblur="if (value ==''){value='用户名'}" >
+                            <div class="search fl"><button type="submit" style="background-color: inherit;border: none"><img src="EndPages/images/search.png"></button></div>-
+                            <!--<div class="search fl"><img src="EndPages/images/search.png"></div>-->
+                        </form>
+                    </div>
+                </h3>
+                <li class="list" id="release_news">
+                    <ul class="list_h">
+                        <li class="b80"><label>用户</label>
+                        信息</li>
+                    </ul>
+                    <!--<li class="list_b_c" id="release_news_in">-->
+                        <form action="/userdetailUpdate" method="post" class="release_news" th:each="u:${userlist}" >
+                        <ul>
+                            <li>
+                                <label class="text_center" >用户id:</label>
+                                <input name="user_id" th:value="${u.user_id}" class="unchangeable" readonly="true";></input>
+                            </li>
+                            <li>
+                                <label class="text_center" >用户名:</label>
+                                <input name="username" th:value="${u.username}"></input>
+                            </li>
+                            <li>
+                                <label class="text_center">性别:</label>
+                                <input name="sex" th:value="${u.sex}"></input>
+                            </li>
+                            <!--<li>-->
+                                <!--<label class="text_center">邮箱:</label>-->
+                                <!--<input name="email" th:value="${u.email}"></input>-->
+                            <!--</li>-->
+                            <li>
+                                <label class="text_center">电话:</label>
+                                <input name="phone" th:value="${u.phone}"></input>
+                            </li>
+                            <button type="submit" name="" class="inputbutton" onclick="alert('修改成功');">保存</button>
+                        </ul>
+                        </form>
+                    </div>
+                </div>
+            </div>
+</body>
+</html>

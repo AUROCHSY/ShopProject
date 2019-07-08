@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <link href="EndPages/css/main.css" rel="stylesheet">
+    <link href="EndPages/css/yrh.css" rel="stylesheet">
+</head>
+<body th:fragment="kindlist">
+    <!-- 类型管理 -->
+            <div class="AccountManagement_c" id="ColumnManagement_c">
+                <h3>类型管理
+                    <div class="amcl fr">
+                        <form method="post" action="/categorySearch">
+                            <input type="text" placeholder="类型名" class="fl" name="c_key"  value="类型名" onfocus="if (value =='类型名'){value =''}" onblur="if (value ==''){value='类型名'}" >
+                            <div class="search fl"><button type="submit" style="background-color: inherit;border: none"><img src="EndPages/images/search.png"></button></div>
+                            <!--<div class="search fl"><img src="EndPages/images/search.png"></div>-->
+                        </form>
+                    </div>
+                </h3>
+                <div class="AM_ct text_center">
+                    <div class="AM_ct_in">
+                        <a href="/EndPages/kindadd.html"><div class="add_btn df_btn fl" id="add_column_btn">添加</div></a>
+                    </div>
+                </div>
+
+                <div class="list">
+                    <ul class="list_h">
+                        <li class="b20"><label><input type="checkbox" name="newsId"><span>序号</span></label></li>
+                        <li class="b20"><label>一级类型名称</label></li>  <li class="b20"><label>二级类型名称</label></li>
+                        <li class="b60"><label>操作</label></li>
+                    </ul>
+                    <div class="list_b_c">
+                        <ul class="list_b" th:each="c : ${categorylist}">
+                        <!--<ul class="list_b" th:each="c,itemStat : ${categorylist}" th:if="${itemStat.count}<=9">-->
+                            <!--<li class="b20"><label><input type="checkbox" name=""><span>1</span></label></li>-->
+                            <form method="post" action="/categoryOperation">
+                                <li class="b20"><input name="second_category_id" th:value="${c.second_category_id}" style="border: none;text-align: center;" readonly="true"></li>
+                                <li class="b20"><input name="first_category_name" th:value="${c.first_category_name}" style="border: none;text-align: center;" readonly="true"></li>
+                                <li class="b20"><input name="second_category_name" th:value="${c.second_category_name}" style="border: none;text-align: center;" readonly="true"></li>
+                                <!--<li class="b20" name=""th:utext="'<label>'+${c.first_category_name}+'</label>'"></li>-->
+                                 <!--<li class="b20" th:utext="'<label>'+${c.second_category_name}+'</label>'"></li>-->
+                                <!--<li class="b60">-->
+
+                                <!--<a href="/categorydetail?second_category_id=${c.scond_category_id}&first_category_name=${c.first_category_name}&second_category_name=${c.second_category_name}">-->
+                                    <!--<button class="edit_btn df_btn fl text_center">编辑</button></a>-->
+                                <input type="submit" name="submitInput" value="编辑" class="inputbutton">
+                                <!--<a href="EndPages/ItemDeleteItem?newsId=${newsId}"><div class="delete_btn df_btn fl text_center">删除</div></a>-->
+                                <input type="submit" name="submitInput"  value="删除" class="inputbutton"  onclick="if(!confirm('are you ok?')){return false;}">
+                                <!--</li>-->
+                                <!--</li>-->
+                            </form>
+                        </ul>
+
+                    </div>
+
+                    <div class="pull_page">
+                        <div class="fl pull_page_up">上一页</div>
+                            <ul>
+                                <li class="on">1</li>
+                                <li>2</li>
+                                <li>3</li>
+                                <li>4</li>
+                                <li class="pull_page_df_btn">…</li>
+                                <li>12</li>
+                            </ul>
+                        <div class="fl pull_page_down">下一页</div>
+                    </div>
+                </div>
+            </div>
+
+
+</body>
+<script type="text/javascript" src="EndPages/js/jquery.js"></script>
+<script type="text/javascript" src="EndPages/js/main.js"></script>
+</html>

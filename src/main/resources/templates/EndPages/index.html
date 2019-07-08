@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>口袋小食管理平台</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="EndPages/css/main.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="header">
+        <div class="header_in">
+            <img src="EndPages/img/ss.ico">
+            <font id="wz">口袋小食管理平台</font>
+            <div class="quit text_center">安全退出</div>
+        </div>
+    </div>
+
+    <div class="content ">
+        <div class="user">
+            <div class="user_status fl text_center">当前用户： <span>管理员001</span></div>
+            <div class="user_location fl">当前： 首页-<span>用户管理</span>  </div>
+        </div>
+        <div class="nav_side text_center fl">
+            <div class="nav UserManagement active" id="0" onclick="changePage(this.id)">用户管理</div></a>
+            <div class="nav KindManagement" id="1" onclick="changePage(this.id)">类型管理</div></a>
+            <!--<div class="nav KindManagement" id="1" onclick="changePage(this.id)">类型管理</div>-->
+            <div class="nav BrandManagement" id="2" onclick="changePage(this.id)">品牌管理</div>
+            <div class="nav FoodManagement" id="3" onclick="changePage(this.id)">商品管理</div>
+            <div class="nav OrdersManagement" id="4" onclick="changePage(this.id)">订单管理</div>
+            <!--<div class="nav AccountManagement" id="5" onclick="changePage(this.id)">账户管理</div>-->
+        </div>
+
+        <div class="main_fx">
+            <div class="AccountManagement_c_iframe" id="fragParent">
+                <!--<iframe id="MainFrame" src="EndPages/userlist.html"></iframe>-->
+                <div  id="p1" class="fragment" display="none"><div th:replace="EndPages/userlist :: userlist"></div></div>
+                <div  id="p2" class="fragment" display="none"><div th:replace="EndPages/kindlist :: kindlist"></div></div>
+                <div  id="p3" class="fragment" display="none"><div th:replace="EndPages/brandlist :: brandlist"></div></div>
+                <div  id="p4" class="fragment" display="none"><div th:replace="EndPages/foodlist :: foodlist"></div></div>
+                <div  id="p5" class="fragment" display="none"><div th:replace="EndPages/orderlist :: orderlist"></div></div>
+                <!--<div  id="p6" class="fragment" display="none"><div th:replace="EndPages/accountlist :: accountlist"></div></div>-->
+
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    function changePage(id){//用于实现页面切换
+        var parent = document.getElementById("fragParent");
+        var allFragment=parent.getElementsByClassName("fragment");
+        console.log(allFragment);
+        console.log(allFragment.length);
+        for (var i=0;i < allFragment.length;i++){
+
+            if(parseInt(id)==parseInt(i)) {
+                allFragment[i].style.display = "block";
+            }
+            else{
+                allFragment[i].style.display = "none";
+            }
+        }
+    }
+</script>
+
+<script type="text/javascript" src="EndPages/js/jquery.js"></script>
+<script type="text/javascript" src="EndPages/js/main.js"></script>
+</html>

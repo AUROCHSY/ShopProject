@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <link href="EndPages/css/main.css" rel="stylesheet">
+</head>
+<body th:fragment="foodlist">
+<!-- 商品管理 -->
+    <div class="AccountManagement_c" id="ColumnManagement_c">
+        <h3>商品管理
+            <div class="amcl fr">
+                <form method="post" action="/commoditySearch">
+                    <input type="text" placeholder="商品名" class="fl" name="key"  value="商品名" onfocus="if (value =='商品名'){value =''}" onblur="if (value ==''){value='商品名'}" >
+                    <div class="search fl"><button type="submit" style="background-color: inherit;border: none"><img src="EndPages/images/search.png"></button></div>
+                </form>
+            </div>
+        </h3>
+        <div class="AM_ct text_center">
+            <div class="AM_ct_in">
+                <a href="/EndPages/commodityAdd"><div class="add_btn df_btn fl" id="add_column_btn">添加</div></a>
+            </div>
+        </div>
+        <div class="list">
+            <ul class="list_h">
+                <li class="b20"><label><input type="checkbox" name="newsId"><span>序号</span></label></li>
+                <li class="b20"><label>商品名称</label></li>
+                <li class="b20"><label>品牌</label></li>
+                <li class="b20"><label>类型</label></li>
+                <li class="b60"><label>操作</label></li>
+            </ul>
+        <div class="list_b_c">
+            <ul class="list_b" th:each="g : ${goodslist}">
+                <form method="post" action="/commodityOperation">
+                    <li class="b20"><input name="commodity_id" th:value="${g.commodity_id}" style="border: none;text-align: center;" readonly="true"></li>
+                    <li class="b20"><input name="cname" th:value="${g.cname}" style="border: none;text-align: center;" readonly="true"></li>
+                    <li class="b20"><input name="name" th:value="${g.name}" style="border: none;text-align: center;" readonly="true"></li>
+                    <li class="b20"><input name="sc_name" th:value="${g.second_category_name}" style="border: none;text-align: center;" readonly="true"></li>
+
+                    <input type="submit" name="submitInput" value="编辑" class="inputbutton">
+                    <!--<input type="submit" name="submitInput"  value="删除" class="inputbutton"  onclick="if(!confirm('are you ok?')){return false;}">-->
+
+                </form>
+            </ul>
+        </div>
+
+        <div class="pull_page">
+            <div class="fl pull_page_up">上一页</div>
+                <ul>
+                    <li class="on">1</li>
+                    <li>2</li>
+                    <li>3</li>
+                    <li>4</li>
+                    <li class="pull_page_df_btn">…</li>
+                    <li>12</li>
+                </ul>
+            <div class="fl pull_page_down">下一页</div>
+        </div>
+
+
+    </div>
+    </div>
+
+
+
+
+</body>
+<script type="text/javascript" src="EndPages/js/jquery.js"></script>
+<script type="text/javascript" src="EndPages/js/main.js"></script>
+</html>

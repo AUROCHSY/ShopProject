@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <link href="EndPages/css/main.css" rel="stylesheet">
+    <link href="EndPages/css/yrh.css" rel="stylesheet">
+</head>
+<body th:fragment="brandlist">
+    <!-- 品牌管理 -->
+            <div class="AccountManagement_c" id="ColumnManagement_c">
+                <h3>品牌管理
+                    <div class="amcl fr">
+                        <form method="post" action="/brandSearch">
+                            <input type="text" placeholder="品牌名" class="fl" name="key"  value="品牌名" onfocus="if (value =='品牌名'){value =''}" onblur="if (value ==''){value='品牌名'}" >
+                            <div class="search fl"><button type="submit" style="background-color: inherit;border: none"><img src="EndPages/images/search.png"></button></div>
+                            <!--<div class="search fl"><img src="EndPages/images/search.png"></div>-->
+                        </form>
+                    </div>
+                </h3>
+                <div class="AM_ct text_center">
+                    <div class="AM_ct_in">
+                        <a href="/EndPages/brandadd.html"><div class="add_btn df_btn fl" id="add_column_btn">添加</div></a>
+                    </div>
+                </div>
+                <div class="list">
+                    <ul class="list_h">
+                        <li class="b20"><label><input type="checkbox" name="newsId"><span>序号</span></label></li>
+                        <li class="b20"><label>品牌名称</label></li>
+                        <li class="b20"><label>负责人</label></li>
+                        <li class="b20"><label>联系电话</label></li>
+                        <li class="b20"><label>供货地址</label></li>
+                        <li class="b60"><label>操作</label></li>
+                    </ul>
+                    <div class="list_b_c">
+                        <ul class="list_b" th:each="b : ${brandlist}">
+                            <form method="post" action="/brandOperation">
+                                <li class="b20"><input name="brand_id" th:value="${b.brand_id}" style="border: none;text-align: center;" readonly="true"></li>
+                                <li class="b20"><input name="name" th:value="${b.name}" style="border: none;text-align: center;" readonly="true"></li>
+                                <li class="b20"><input name="contact" th:value="${b.contact}" style="border: none;text-align: center;" readonly="true"></li>
+                                <li class="b20"><input name="phone" th:value="${b.phone}" style="border: none;text-align: center;" readonly="true"></li>
+                                <li class="b20"><input name="address" th:value="${b.address}" style="border: none;text-align: center;" readonly="true"></li>
+
+                                <input type="submit" name="submitInput" value="编辑" class="inputbutton">
+                                <input type="submit" name="submitInput"  value="删除" class="inputbutton"  onclick="if(!confirm('are you ok?')){return false;}">
+
+                            </form>
+                        </ul>
+                    </div>
+
+                    <div class="pull_page">
+                        <div class="fl pull_page_up">上一页</div>
+                            <ul>
+                                <li class="on">1</li>
+                                <li>2</li>
+                                <li>3</li>
+                                <li>4</li>
+                                <li class="pull_page_df_btn">…</li>
+                                <li>12</li>
+                            </ul>
+                        <div class="fl pull_page_down">下一页</div>
+                    </div>
+                </div>
+            </div>
+
+</body>
+<script type="text/javascript" src="../js/jquery.js"></script>
+<script type="text/javascript" src="../js/main.js"></script>
+</html>

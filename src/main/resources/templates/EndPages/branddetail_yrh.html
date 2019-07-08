@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <link href="EndPages/css/main.css" rel="stylesheet">
+    <link href="EndPages/css/yrh.css" rel="stylesheet">
+</head>
+<body>
+<!-- 品牌搜索详情页 -->
+<li class="AccountManagement_c" id="NewsManagement_c">
+    <h3>品牌管理
+        <div class="amcl fr">
+            <form method="post" action="/brandSearch">
+                <input type="text" placeholder="品牌名" class="fl" name="key"  value="品牌名" onfocus="if (value =='品牌名'){value =''}" onblur="if (value ==''){value='品牌名'}" >
+                <div class="search fl"><button type="submit" style="background-color: inherit;border: none"><img src="EndPages/images/search.png"></button></div>
+            </form>
+        </div>
+    </h3>
+<li class="list" id="release_news">
+    <ul class="list_h">
+        <li class="b80"><label>品牌</label>
+            信息</li>
+    </ul>
+    <!--<li class="list_b_c" id="release_news_in">-->
+    <!--<form action="/userdetailUpdate" method="post" class="release_news" th:each="u:${userlist}" >-->
+    <form action="/branddetail_yrh" method="post" class="release_news" th:each="b:${brandlist}" >
+        <ul>
+            <li>
+                <label class="text_center" >品牌ID:</label>
+                <input name="user_id" th:value="${b.brand_id}" class="unchangeable" readonly="true";></input>
+            </li>
+            <li>
+                <label class="text_center" >品牌名称:</label>
+                <input name="username" th:value="${b.name}" class="unchangeable" readonly="true";></input>
+            </li>
+            <li>
+                <label class="text_center">负责人:</label>
+                <input name="sex" th:value="${b.contact}" class="unchangeable" readonly="true";></input>
+            </li>
+            <li>
+                <label class="text_center">电话:</label>
+                <input name="phone" th:value="${b.phone}" class="unchangeable" readonly="true";></input>
+            </li>
+            <li>
+                <label class="text_center">供货地址:</label>
+                <input name="phone" th:value="${b.address}" class="unchangeable" readonly="true";></input>
+            </li>
+            <!--<button type="submit" name="" class="inputbutton" onclick="alert('修改成功');">保存</button>-->
+        </ul>
+    </form>
+</li>
+</body>
+</html>

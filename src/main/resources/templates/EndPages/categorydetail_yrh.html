@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <link href="EndPages/css/main.css" rel="stylesheet">
+    <link href="EndPages/css/yrh.css" rel="stylesheet">
+</head>
+<body>
+<!-- 类型搜素详情页 -->
+<li class="AccountManagement_c" id="NewsManagement_c">
+    <h3>种类管理
+        <div class="amcl fr">
+            <form method="post" action="/categorySearch">
+                <input type="text" placeholder="类型名" class="fl" name="c_key"  value="类型名" onfocus="if (value =='类型名'){value =''}" onblur="if (value ==''){value='用户名'}" >
+                <div class="search fl"><button type="submit" style="background-color: inherit;border: none"><img src="EndPages/images/search.png"></button></div>-
+                <!--<div class="search fl"><img src="EndPages/images/search.png"></div>-->
+            </form>
+        </div>
+    </h3>
+<li class="list" id="release_news">
+    <ul class="list_h">
+        <li class="b80"><label>种类</label>
+            信息</li>
+    </ul>
+    <!--<li class="list_b_c" id="release_news_in">-->
+    <!--<form action="/userdetailUpdate" method="post" class="release_news" th:each="u:${userlist}" >-->
+    <form action="/categorydetail_yrh" method="post" class="release_news" th:each="c:${categorylist}" >
+        <ul>
+            <li>
+                <label class="text_center" >一级目录id:</label>
+                <input name="user_id" th:value="${c.first_category_id}" class="unchangeable" readonly="true";></input>
+            </li>
+            <li>
+                <label class="text_center" >二级目录id:</label>
+                <input name="username" th:value="${c.second_category_id}" class="unchangeable" readonly="true";></input>
+            </li>
+            <li>
+                <label class="text_center">一级目录名称:</label>
+                <input name="sex" th:value="${c.first_category_name}" class="unchangeable" readonly="true";></input>
+            </li>
+            <li>
+                <label class="text_center">二级目录名称:</label>
+                <input name="phone" th:value="${c.second_category_name}" class="unchangeable" readonly="true";></input>
+            </li>
+            <!--<button type="submit" name="" class="inputbutton" onclick="alert('修改成功');">保存</button>-->
+        </ul>
+    </form>
+</li>
+</body>
+</html>

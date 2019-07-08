@@ -1,0 +1,26 @@
+
+/*按钮样式*/
+.inputbutton {
+    background-color: lightskyblue; /* Green */
+    border: none;
+    color: white;
+    padding: 2px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 10px;
+    float: left;
+}
+/*按钮悬浮样式*/
+.inputbutton:hover {
+    background-color: #3e8e41;
+}
+
+/*不可修改的输入框样式(用户Id)*/
+.unchangeable{
+    cursor: not-allowed;
+    background-color: gainsboro;
+    border: none;
+}

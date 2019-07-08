@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head lang="en">
+	<meta charset="UTF-8">
+	<title>注册</title>
+	<link rel="stylesheet" href="FrontPages/css/amazeui.min.css" />
+	<link href="FrontPages/css/dlstyle.css" rel="stylesheet" type="text/css">
+	<script src="FrontPages/js/jquery.min.js"></script>
+	<script src="FrontPages/js/amazeui.min.js"></script>
+</head>
+
+<body>
+<iframe src="FrontPages/header.html" width="100%" height="120px" frameborder="0"></iframe>
+<br>
+<div class="res-banner">
+	<div class="res-main">
+		<div class="login-banner-bg"><span></span><img src="FrontPages/images/big.jpg" /></div>
+		<div class="login-box">
+			<div class="am-tabs" id="doc-my-tabs">
+				<ul class="am-tabs-nav am-nav am-nav-tabs am-nav-justify">
+					<li class="am-active"><a href="#" style="text-align:left; padding:0; margin:0">用户名注册</a></li>
+				</ul>
+
+				<div class="am-tabs-bd">
+					<div class="am-tab-panel am-active">
+						<form method="post" action="/register1" id="loginForm">
+							<div class="user-name">
+								<input type="text" name="username" id="username" placeholder="请输入用户名" required="true"> </div>
+							<div class="user-pass">
+								<input type="password" name="password" id="password" placeholder="设置密码" required="true"> </div>
+							<div class="user-pass">
+								<input type="password" name="passwordRepeat" id="passwordRepeat" placeholder="确认密码" required="true"> </div>
+							<div class="am-cf">
+								<input type="submit" name="" value="注册"  class="am-btn am-btn-primary am-btn-sm am-fl" >
+								<div th:if="${ correct_username=='not_duplicated' and correct_username!=null }">
+									<script>
+                                        alert('注册成功');
+                                        window.location.href="/login";
+									</script>
+								</div>
+							</div>
+						</form>
+
+						<!--<div class="login-links">-->
+							<!--<label for="reader-me">-->
+								<!--<input id="reader-me" type="checkbox" required="true"> 点击表示您同意商城《服务协议》-->
+							<!--</label>-->
+						<!--</div>-->
+
+						<!--<div class="am-cf">-->
+							<!--<input onclick="submit();" id="submit"type="submit" name="" value="注册" class="am-btn am-btn-primary am-btn-sm am-fl"></div>-->
+
+						<div>
+							<span id="basic-addon0">&nbsp;</span>
+							<span style="font-size: 12px;color: red" th:text="${error_same_password}" aria-describedby="basic-addon0"></span>
+							<span style="font-size: 12px;color: red" th:text="${error_duplicated_username}" aria-describedby="basic-addon0"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<iframe src="FrontPages/footer.html" width="100%" height="150px" frameborder="0"></iframe>
+</div>
+</body>
+<!--<script>-->
+    <!--function submit(){-->
+        <!--var val = $('#reader-me').prop("checked");-->
+        <!--var username=$('#username').prop("value");-->
+        <!--var password=$('#password').prop("value");-->
+        <!--var passwordRepeat=$('#passwordRepeat').prop("value");-->
+
+        <!--if(!username || !password || !passwordRepeat){-->
+            <!--alert('请填写完整的注册信息');-->
+        <!--}-->
+        <!--if (!val) {-->
+            <!--alert('请先同意《服务协议》鸭');-->
+        <!--}-->
+        <!--alert('提交之前的之前');-->
+        <!--if(username &amp;&amp; password &amp;&amp; passwordRepeat &amp;&amp; val) {-->
+            <!--alert('提交之前');-->
+            <!--document.getElementById("loginForm").submit();//表单提交-->
+        <!--}-->
+    <!--}-->
+<!--</script>-->
+</html>

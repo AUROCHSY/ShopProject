@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+    <link href="css/main.css" rel="stylesheet">
+</head>
+<body>
+<!-- 品牌管理 -->
+            <div class="AccountManagement_c" id="NewsManagement_c">
+                <h3>品牌管理
+                    <div class="amcl fr">
+                        <form method="post" action="/brandSearch">
+                            <input type="text" placeholder="品牌名" class="fl" name="key"  value="品牌名" onfocus="if (value =='品牌名'){value =''}" onblur="if (value ==''){value='品牌名'}" >
+                            <div class="search fl"><button type="submit" style="background-color: inherit;border: none"><img src="EndPages/images/search.png"></button></div>
+                        </form>
+                    </div>
+                </h3>
+                <div class="list" id="release_news">
+                    <ul class="list_h">
+                        <li class="b80"><label>添加品牌</label></li>
+                    </ul>
+
+                    <form method="post" action="/EndPages/brandAdd">
+                        <div class="list_b_c" id="release_news_in">
+                            <div class="release_news">
+                                <div class="news_title">
+                                    <label class="text_center">品牌名：</label>
+                                    <input type="text" placeholder="填写品牌名" name="name" style="text-align: center;">
+                                </div>
+                                <div class="news_title">
+                                    <label class="text_center">负责人：</label>
+                                    <input type="text" placeholder="填写负责人"  name="contact" style="text-align: center;">
+                                </div>
+                                <div class="news_title">
+                                    <label class="text_center">电话：</label>
+                                    <input type="text" placeholder="填写电话" name="phone" style="text-align: center;">
+                                </div>
+                                <div class="news_title">
+                                    <label class="text_center">邮箱：</label>
+                                    <input type="text" placeholder="填写邮箱" name="email" style="text-align: center;">
+                                </div>
+                                <div class="news_title">
+                                    <label class="text_center">供货地址：</label>
+                                    <input type="text" placeholder="填写供货地址"  name="address" style="text-align: center;">
+                                </div>
+                                <!--<div class="release_news_ok_btn text_center">保存</div>-->
+                                <input type="submit" class="release_news_ok_btn text_center" style="margin-left: 250px">
+                                <!--<div class="news_title">-->
+                                <div style="margin-left: 250px">
+                                    <input name="fc_response" th:value="${brand_response}" style="border: none;text-align: center;font-size: 16px; " readonly="true">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <!--<div class="list_b_c" id="release_news_in">-->
+                        <!--<div class="release_news">-->
+                        	<!--<div class="news_title">-->
+                                <!--<label class="text_center">品牌名称：</label>-->
+                                <!--<input type="text" placeholder="填写品牌名称" name="">-->
+                            <!--</div>-->
+                            <!--<div class="news_title">-->
+                                <!--<label class="text_center">负责人：</label>-->
+                                <!--<input type="text" placeholder="填写负责人" name="">-->
+                            <!--</div>-->
+                            <!--<div class="news_title">-->
+                                <!--<label class="text_center">联系电话：</label>-->
+                                <!--<input type="text" placeholder="填写联系电话" name="">-->
+                            <!--</div>-->
+                            <!--<div class="news_title">-->
+                                <!--<label class="text_center">供货地址：</label>-->
+                                <!--<input type="text" placeholder="填写供货地址" name="">-->
+                            <!--</div>-->
+                            <!--<div class="release_news_ok_btn text_center">保存</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                </div>
+            </div>
+</body>
+</html>
