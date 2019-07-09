@@ -38,6 +38,17 @@
                             <option th:each="c:${categorylist}" th:value="${c.second_category_name}" th:text="${c.second_category_name }">初始值</option>
                         </select>
                     </div>
+                    <!--<div class="news_title">-->
+                        <!--<label class="text_center">口味：</label>-->
+                        <!--<select class="form-control" name="flavor_name"  style="width:100px;margin-left: 210px;">-->
+                            <!--<option th:each="f:${flavorlist}" th:value="${f.flavor_name}" th:text="${f.flavor_name}">初始值</option>-->
+                        <!--</select>-->
+                    <!--</div>-->
+                    <!--<div class="news_title">-->
+                        <!--<label class="text_center">更改库存：</label>-->
+                        <!--<input type="text"placeholder="填写新库存信息" name="stock" th:value="${stock}" style="border: none;text-align: center;" required="true">-->
+                        <!--&lt;!&ndash;<input type="number" min="0" max="100" step="1"/>&ndash;&gt;-->
+                    <!--</div>-->
                     <div class="news_title">
                         <label class="text_center">促销价：</label>
                         <input type="text"placeholder="填写促销价" name="promotional_price" th:value="${promotional_price}" style="border: none;text-align: center;">
@@ -50,6 +61,10 @@
                         <label class="text_center">商品描述：</label>
                         <input type="text" name="description" th:value="${description}" style="border: none;text-align: center;">
                     </div>
+                    <!--<div class="news_title">-->
+                    <!--<label class="text_center">图片</label>-->
+                    <!--<input type="file" placeholder="选择图片" name="img">-->
+                    <!--</div>-->
                     <button type="submit" class="release_news_ok_btn text_center" style="margin-left: 250px" onclick="alert('保存成功!')">保存</button>
                 </div>
             </div>

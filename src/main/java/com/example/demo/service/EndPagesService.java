@@ -2,14 +2,8 @@ package com.example.demo.service;/*
 * create by yrh on 2019/7/4 9:06
 */
 
-import com.example.demo.entity.BrandEntity;
-import com.example.demo.entity.CategoryEntity;
-import com.example.demo.entity.GoodsEntity_yrh;
-import com.example.demo.entity.UserEntity;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
+import com.example.demo.entity.*;
 import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -54,7 +48,37 @@ public interface EndPagesService {
     int updateCommodity(int brand_id,int second_category_id,String cname,double promotional_price,double original_price,String description,int commodity_id);
     //删除商品
     int deleteCommodity(int commodity_id);
-
     //添加商品(在这之前需要先获取对应品牌的id) //后期可添加添加图片功能
     int addCommodity(String cname,int brand_id,int second_category_id,double promotional_price,double original_price,String description);
+
+    //根据品牌id、二级目录id、商品名获取商品id
+    String getCommodityIdByName(int brand_id,int second_category_id,String cname);//如果为空则返回Null,否则返回id(记得要转为int)
+    //根据口味名获取口味id
+    String getFlavorIdByName(String flavor_name);//如果为空则返回Null,否则返回id(记得要转为int)
+    //获取全部口味
+    List<FlavorEntity> getAllFlavor();
+
+    //根据flavor_id和commodity_id查询tb_flavor_commodity是否存在记录
+    String  getFlavorCommodity_Stock(int commodity_id,int flavor_id);//如果为空则返回Null,否则返回id(记得要转为int)
+
+    //根据flavor_commodity_id更新tb_flavor_commodity中的库存
+    int updateStock(int stock,int flavor_commodity_id);
+
+    //tb_flavor_commodity插入新数据
+    int addFlavorCommodity(int commodity_id,int flavor_id,int stock);
+
+    //tb_flavor_commodity更新口味id 和 库存stock
+    int updateFlavorIdAndStock(int flavor_id,int stock,int flavor_commodity_id);
+
+/*管理员登录=====================================================*/
+//用户名密码验证，返回admin_id
+List<AdminEntity_yrh> admin_login(String admin_name, String password);
+
+/*订单管理=================================================*/
+// 整合订单表tb_order,订单详情表tb_order_detail,商品表commodity_id，
+// 返回订单id,订单状态，订单详情id,商品数量，商品名称(有多个，字符串/数组的形式？)
+    List<OrderGroupEntity_yrh> getAllOrderGroup();
+
+    //编辑订单状态
+    int updateOrder(int state,String order_id);
 }

@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>口袋小食管理平台</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link href="EndPages/css/main.css" rel="stylesheet">
+    <link rel="stylesheet" href="FrontPages/css/amazeui.css">
+    <link rel="stylesheet" href="FrontPages/css/dlstyle.css" type="text/css">
+</head>
+<style>
+    .self-login-box {
+        width: 100%;
+        max-width:360px;
+        height: 430px;
+        position: absolute;
+        margin-top:20px;
+        margin-left:auto;
+        margin-right: auto;
+        background:#f8f8f8;
+        right:2%;
+        padding:10px 20px;
+    }
+</style>
+<body>
+
+<div class="header">
+    <div class="header_in">
+        <img src="EndPages/img/ss.ico">
+        <font id="wz">口袋小食管理平台</font>
+    </div>
+</div>
+
+<div class="content" style="margin-left: 40%;margin-right: 40%;">
+    <!--<div class="user">-->
+        <!--<div class="user_status fl text_center">当前用户： <span>管理员001</span></div>-->
+        <!--<div class="user_location fl">当前： 后台-<span>登录</span>  </div>-->
+    <!--</div>-->
+    <!--<div class="main_fx">-->
+    <div style="margin-left: 30%;margin-right: 30%;">
+        <div style="margin-left: 30%;margin-right: 30%;">
+            </div><!--一个登录表框-->
+            <div style="margin-left: 40%;margin-right: 40%;">
+                <form method="post" action="/EndPages" >
+                <div class="self-login-box" >
+                    <br>
+                    <h3 class="title">登录商城</h3>
+                    <br>
+                    <br>
+                    <div class="clear">
+                    </div>
+                    <div class="login-form">
+                        <div class="user-name">
+                            <input type="text" name="admin_name" id="admin_name" placeholder="用户名" required>
+                        </div>
+                        <div class="user-pass">
+                            <input type="password" name="password" id="password" placeholder="请输入密码" required>
+                        </div>
+                    </div>
+
+                    <div>
+                        <span id="basic-addon0">&nbsp; </span><span style="font-size:12px;color:red" th:text="${login_response}" aria-describedby="basic-addon0"></span>
+                    </div>
+                    <div class="am-cf">
+                        <input type="submit" name="" value="登 录" class="am-btn am-btn-primary am-btn-sm">
+                    </div>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+
+<script type="text/javascript" src="EndPages/js/jquery.js"></script>
+<script type="text/javascript" src="EndPages/js/main.js"></script>
+</html>

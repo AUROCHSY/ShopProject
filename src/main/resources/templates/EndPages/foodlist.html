@@ -23,7 +23,7 @@
         </div>
         <div class="list">
             <ul class="list_h">
-                <li class="b20"><label><input type="checkbox" name="newsId"><span>序号</span></label></li>
+                <li class="b20"><label><span>序号</span></label></li>
                 <li class="b20"><label>商品名称</label></li>
                 <li class="b20"><label>品牌</label></li>
                 <li class="b20"><label>类型</label></li>
@@ -37,9 +37,13 @@
                     <li class="b20"><input name="name" th:value="${g.name}" style="border: none;text-align: center;" readonly="true"></li>
                     <li class="b20"><input name="sc_name" th:value="${g.second_category_name}" style="border: none;text-align: center;" readonly="true"></li>
 
-                    <input type="submit" name="submitInput" value="编辑" class="inputbutton">
-                    <!--<input type="submit" name="submitInput"  value="删除" class="inputbutton"  onclick="if(!confirm('are you ok?')){return false;}">-->
-
+                    <li class="b60">
+                        <div style="margin-left: auto;margin-right: auto">
+                            <div class="edit_btn df_btn text_center" style="display: inline-block">
+                                <input type="submit" name="submitInput" value="编辑" class="niceinput" style="border:none;background-color:inherit;color:white;font-size:16px;margin-top:3px;">
+                            </div>
+                        </div>
+                    </li>
                 </form>
             </ul>
         </div>

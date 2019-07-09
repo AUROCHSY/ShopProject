@@ -41,11 +41,13 @@
                             <li class="b20" th:utext="'<label>'+${u.sex}+'</label>'"></li>
                             <!--<li class="b20" th:utext="'<label>'+${u.email}+'</label>'"></li>-->
                             <li class="b20" th:utext="'<label>'+${u.phone}+'</label>'"></li>
-                            <li class="b60"> 
-                            		<!--<a href="/EndPages/userdetail.html" ><div class="edit_btn df_btn fl text_center">详情</div></a>-->
-                                    <a href="/userdetail" ><div class="edit_btn df_btn fl text_center">详情</div></a>
-                                    <!--<a href="/userdelete"><div class="delete_btn df_btn fl text_center">删除</div></>-->
+                            <li class="b60">
+                                <div style="margin-left: auto;margin-right: auto">
+                                <!--<a href="/EndPages/userdetail.html" ><div class="edit_btn df_btn text_center">详情</div></a>-->
+                                <a href="/userdetail" ><div class="edit_btn df_btn text_center" style="display: inline-block">详情</div></a>
+                                <!--<a href="/userdelete"><div class="delete_btn df_btn  text_center" style="display: inline-block">删除</div></a>-->
                                     <!--<button type="submit" class="delete_btn df_btn fl text_center">删除</button>-->
+                                </div>
                             </li>
                         </ul>
                         <!--</form>-->

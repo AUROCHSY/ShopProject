@@ -362,7 +362,8 @@ select {
 	background-color: #2980b6;
 	border-radius: 4px;
 	color: #fff;
-	margin-right: 15px;
+	margin: 8px;
+	margin-right: 8px;
 	cursor: pointer;
 	border: 1px solid rgba(0, 0, 0, 0);
 	transition: 0.2s;
@@ -423,7 +424,8 @@ select {
 }
 
 .list label {
-	margin-left: 20px;
+	margin-left: 0px;
+	text-align: center;
 }
 
 .list label span {
@@ -432,10 +434,12 @@ select {
 
 .b20 {
 	width: 16%;
+	text-align: center;
 }
 
 .b60 {
 	width: 20%;
+	text-align: center;
 }
 
 .b80 {

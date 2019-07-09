@@ -2,18 +2,18 @@ package com.example.demo.controller;/*
 * create by yrh on 2019/7/4 9:17
 */
 
-import com.example.demo.entity.BrandEntity;
-import com.example.demo.entity.CategoryEntity;
-import com.example.demo.entity.GoodsEntity_yrh;
-import com.example.demo.entity.UserEntity;
+import com.example.demo.entity.*;
 import com.example.demo.service.EndPagesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -22,24 +22,98 @@ public class EndPagesController {
     private EndPagesService endpagesservice;
 
     /*主页,全部数据展示====================================================*/
+    /*后台登录页*/
+    @RequestMapping(value = {"/EndPagesLogin"})//
+    public String EndPagesLogin(HttpServletRequest request, HttpSession httpSession, Model model) {
+        return "EndPages/endpagelogin_yrh";
+    }
     /*管理台主页*/
     @RequestMapping(value = {"/EndPages"})//默认展示用户管理
     public String index(HttpServletRequest request, HttpSession httpSession, Model model) {
 
-        List<UserEntity> userlist = endpagesservice.showAllUser();//展示所有用户
-        List<CategoryEntity> categorylist = endpagesservice.showAllCategory();//展示所有目录
-        List<BrandEntity> brandlist = endpagesservice.getAllBrand();
-        List<GoodsEntity_yrh> goodslist=endpagesservice.getAllGoods();
+        /*处理管理员登录请求*/
+        String admin_name = (String) request.getParameter("admin_name");
+        String password = (String) request.getParameter("password");
+//        admin_name="A";password="B";
+        List<AdminEntity_yrh> adminlist = endpagesservice.admin_login(admin_name,password);
+        System.out.println(adminlist);
+        if(adminlist.size()==0){
+            System.out.println("用户名或密码错误！");
+            model.addAttribute("login_response", "用户名或密码错误！");
+            return "EndPages/endpagelogin_yrh";
+        }
+        else{
+            System.out.println("登录成功");
+            model.addAttribute("login_response","登录成功！");
+            /*返回实体类到主页*/
+            List<UserEntity> userlist = endpagesservice.showAllUser();//展示所有用户
+            List<CategoryEntity> categorylist = endpagesservice.showAllCategory();//展示所有目录
+            List<BrandEntity> brandlist = endpagesservice.getAllBrand();
+            List<GoodsEntity_yrh> goodslist=endpagesservice.getAllGoods();
+            List<OrderGroupEntity_yrh> orderlist=endpagesservice.getAllOrderGroup();
 
-        model.addAttribute("userlist", userlist);//所有用户的集合list
-        model.addAttribute("categorylist", categorylist);
-        model.addAttribute("brandlist", brandlist);
-        System.out.println("here!");
-        model.addAttribute("goodslist",goodslist);
-        System.out.println("I GOT GOODSLIST!");
-        System.out.println(goodslist);
-        return "EndPages/index";
+            model.addAttribute("userlist", userlist);//所有用户的集合list
+            model.addAttribute("categorylist", categorylist);
+            model.addAttribute("brandlist", brandlist);
+            model.addAttribute("goodslist",goodslist);
+            model.addAttribute("orderlist",orderlist);
+            System.out.println("I GOT ORDERLIST!!!!!!");
+            System.out.println(orderlist);
+            //当前登录用户实体
+            model.addAttribute("adminentity;",adminlist);
+
+
+//            List<ArrayList<String>> nn_orderlist=new ArrayList<>();
+//            String[][] arr=new String[orderlist.size()][20];
+            /*返回一个每个对象为"一个order聚合类 和 一个order的所有商品"的list*/
+//            List<OrderAllInOneEntity_yrh> order_all_in_one_list=new ArrayList<>();
+//            OrderAllInOneEntity_yrh order_all_in_one=new OrderAllInOneEntity_yrh();
+//            for(int i=0;i<orderlist.size();i++){
+//                order_all_in_one.orderOne=orderlist.get(i);//一个订单聚合类对象
+//
+//                String one_order_cname=orderlist.get(i).cname_group;//一个订单的全部商品：用逗号连接的字符串
+//                String[] sgroup=one_order_cname.split(",");//每个订单的商品切割后存到一个临时数组中
+//                order_all_in_one.cnameOneLineArr=sgroup;//一个订单的全部商品：一维数组
+//
+//                order_all_in_one_list.add(order_all_in_one);
+//            }
+//
+//            model.addAttribute("order_all_in_one_list",order_all_in_one_list);
+
+            /*返回一个二维数组，每行代表一个订单的商品*/
+//            String[][] arr=new String[orderlist.size()][];//二维数组，一维为每个订单id的商品，二维为商品字符串的切割结果
+//            for(int i=0;i<orderlist.size();i++){
+//                String one_order_cname=orderlist.get(i).cname_group;//一个订单的全部商品：用逗号连接的字符串
+//                String[] sgroup=one_order_cname.split(",");//每个订单的商品切割后存到一个临时数组中
+//
+//                arr[i]=new String[sgroup.length];//初始化当前行长度(每行代表一个订单的全部商品)
+//                System.out.println("This is all the commodity of order: "+i);
+//                for (int j=0;j<sgroup.length;j++){
+//                    System.out.println(sgroup[j]);
+//                    arr[i][j]=sgroup[j];
+//                }
+//            }
+//            model.addAttribute("all_commodity",arr);
+
+
+//            order_all_in_one.orderlist=orderlist;
+//            order_all_in_one.cnameArr=arr;
+//            System.out.println("so amazing!!!!!!!!!!!!");
+//            System.out.println(order_all_in_one.orderlist);
+//            System.out.println(order_all_in_one.cnameArr);
+            return "EndPages/index";
+
+        }
+
     }
+
+    //主页上退出按钮的路由
+    @RequestMapping(value = {"/endpagesexit"})
+    public String endpagesexit(){
+        System.out.println("退出成功！");
+        return "EndPages/endpagelogin_yrh";
+    }
+
 /*用户管理======================================*
       /*用户管理选项列表*/
 //    @RequestMapping(value = {"/userlist"})//用户管理
@@ -146,16 +220,18 @@ public class EndPagesController {
 //            System.out.println("OOOOOOOOOOOOOOOSSSOOOOOOOOOOOOOOSSSSSSSSSSSSSSSSSSOOOOOOOOS");
 //            System.out.println(second_category_id);
 
-            //list们//todo:===============================================================================
+            //<label>list们
             List<UserEntity> userlist = endpagesservice.showAllUser();//展示所有用户
             List<CategoryEntity> categorylist = endpagesservice.showAllCategory();//展示所有目录
             List<BrandEntity> brandlist = endpagesservice.getAllBrand();
-            List<GoodsEntity_yrh>goodslist=endpagesservice.getAllGoods();
+            List<GoodsEntity_yrh> goodslist=endpagesservice.getAllGoods();
+            List<OrderGroupEntity_yrh> orderlist=endpagesservice.getAllOrderGroup();
 
             model.addAttribute("userlist", userlist);//所有用户的集合list
             model.addAttribute("categorylist", categorylist);
             model.addAttribute("brandlist", brandlist);
             model.addAttribute("goodslist",goodslist);
+            model.addAttribute("orderlist",orderlist);
             return "EndPages/index";
         } else {
             System.out.println("提交的操作类型错误！！");
@@ -174,16 +250,18 @@ public class EndPagesController {
 
         endpagesservice.updateCategory(second_category_id, first_category_name, second_category_name);
 
-        //list们//todo:===============================================================================
+        //<label>list们
         List<UserEntity> userlist = endpagesservice.showAllUser();//展示所有用户
         List<CategoryEntity> categorylist = endpagesservice.showAllCategory();//展示所有目录
         List<BrandEntity> brandlist = endpagesservice.getAllBrand();
-        List<GoodsEntity_yrh>goodslist=endpagesservice.getAllGoods();
+        List<GoodsEntity_yrh> goodslist=endpagesservice.getAllGoods();
+        List<OrderGroupEntity_yrh> orderlist=endpagesservice.getAllOrderGroup();
 
         model.addAttribute("userlist", userlist);//所有用户的集合list
         model.addAttribute("categorylist", categorylist);
         model.addAttribute("brandlist", brandlist);
         model.addAttribute("goodslist",goodslist);
+        model.addAttribute("orderlist",orderlist);
         return "EndPages/index";
 
     }
@@ -271,16 +349,18 @@ public class EndPagesController {
         } else if (operationKind.equals("删除")) {
             endpagesservice.deleteBrand(brand_id);
 
-            //list们//todo:===============================================================================
+            //<label>list们
             List<UserEntity> userlist = endpagesservice.showAllUser();//展示所有用户
             List<CategoryEntity> categorylist = endpagesservice.showAllCategory();//展示所有目录
             List<BrandEntity> brandlist = endpagesservice.getAllBrand();
-            List<GoodsEntity_yrh>goodslist=endpagesservice.getAllGoods();
+            List<GoodsEntity_yrh> goodslist=endpagesservice.getAllGoods();
+            List<OrderGroupEntity_yrh> orderlist=endpagesservice.getAllOrderGroup();
 
             model.addAttribute("userlist", userlist);//所有用户的集合list
             model.addAttribute("categorylist", categorylist);
             model.addAttribute("brandlist", brandlist);
             model.addAttribute("goodslist",goodslist);
+            model.addAttribute("orderlist",orderlist);
             return "EndPages/index";
         } else {
             System.out.println("提交的操作类型错误！！");
@@ -300,16 +380,18 @@ public class EndPagesController {
 
         endpagesservice.updateBrand(name,contact,phone,address,brand_id);
 
-        //list们//todo:===============================================================================
+        //<label>list们
         List<UserEntity> userlist = endpagesservice.showAllUser();//展示所有用户
         List<CategoryEntity> categorylist = endpagesservice.showAllCategory();//展示所有目录
         List<BrandEntity> brandlist = endpagesservice.getAllBrand();
-        List<GoodsEntity_yrh>goodslist=endpagesservice.getAllGoods();
+        List<GoodsEntity_yrh> goodslist=endpagesservice.getAllGoods();
+        List<OrderGroupEntity_yrh> orderlist=endpagesservice.getAllOrderGroup();
 
         model.addAttribute("userlist", userlist);//所有用户的集合list
         model.addAttribute("categorylist", categorylist);
         model.addAttribute("brandlist", brandlist);
         model.addAttribute("goodslist",goodslist);
+        model.addAttribute("orderlist",orderlist);
 
         return "EndPages/index";
 
@@ -367,6 +449,8 @@ public class EndPagesController {
         String cname = (String) request.getParameter("cname");//商品名
         String name = (String) request.getParameter("name");//品牌名
         String sc_name = (String) request.getParameter("sc_name");//二级目录名(类型)
+        String flavor_name=(String) request.getParameter("flavor_name");//口味名称
+        String stock=(String) request.getParameter("stock");//商品库存
 
         if (operationKind.equals("编辑")) {//只是跳转到编辑页
             model.addAttribute("commodity_id",commodity_id);
@@ -374,31 +458,31 @@ public class EndPagesController {
             model.addAttribute("name", name);
             model.addAttribute("sc_name", sc_name);
 
+
             List<CategoryEntity> categorylist = endpagesservice.showAllCategory();//将目录列表和品牌列表传递到编辑页
             List<BrandEntity> brandlist = endpagesservice.getAllBrand();
+            List<FlavorEntity> flavorlist = endpagesservice.getAllFlavor();
             model.addAttribute("categorylist",categorylist);
             model.addAttribute("brandlist",brandlist);
+            model.addAttribute("flavorlist",flavorlist);
 
-            System.out.println("I got categorylist!");
-            System.out.println(categorylist);
-            System.out.println("I got brandlist!");
-            System.out.println(brandlist);
-            System.out.println("before turn to edit!!!!!!!!!!!!!!!");
 
             return "EndPages/foodedit";
         } else if (operationKind.equals("删除")) {//商品是订单表的主表，删除商品首先要先删除其产生的全部订单，不符合实际应用场景，所以这个不做了，在前端去掉了删除按钮
             endpagesservice.deleteCommodity(commodity_id);
 
-            //list们//todo:===============================================================================
+            //<label>list们
             List<UserEntity> userlist = endpagesservice.showAllUser();//展示所有用户
             List<CategoryEntity> categorylist = endpagesservice.showAllCategory();//展示所有目录
             List<BrandEntity> brandlist = endpagesservice.getAllBrand();
-            List<GoodsEntity_yrh>goodslist=endpagesservice.getAllGoods();
+            List<GoodsEntity_yrh> goodslist=endpagesservice.getAllGoods();
+            List<OrderGroupEntity_yrh> orderlist=endpagesservice.getAllOrderGroup();
 
             model.addAttribute("userlist", userlist);//所有用户的集合list
             model.addAttribute("categorylist", categorylist);
             model.addAttribute("brandlist", brandlist);
             model.addAttribute("goodslist",goodslist);
+            model.addAttribute("orderlist",orderlist);
             return "EndPages/index";
         } else {
             System.out.println("提交的操作类型错误！！");
@@ -415,10 +499,12 @@ public class EndPagesController {
         String cname = (String) request.getParameter("cname");//商品名
         String name=(String) request.getParameter("name");//品牌名,从下拉列表中选取
         String sc_name=(String) request.getParameter("sc_name");//二级目录名，从下拉列表中选取
-
         String promotional_price = (String) request.getParameter("promotional_price");//品牌名
         String original_price = (String) request.getParameter("original_price");//二级目录名(类型)
         String description = (String) request.getParameter("description");//二级目录名(类型)
+
+//        String flavor_name=(String) request.getParameter("flavor_name");//口味id
+//        String stock=(String) request.getParameter("stock");//商品库存
 
         String brand_id=endpagesservice.getBrandIdByName(name);//由商品名查询数据库得商品id
         String sc_id=endpagesservice.getScIdByName(sc_name);//由二级目录名查询数据库得二级目录id
@@ -428,18 +514,33 @@ public class EndPagesController {
         int nbrand_id=Integer.parseInt(brand_id);//将商品和二级目录id转为int类型
         int nsc_id=Integer.parseInt(sc_id);
 
+        //更新tb_commodity中的商品信息
         endpagesservice.updateCommodity(nbrand_id,nsc_id,cname,npromotional_price,noriginal_price,description,commodity_id);
         System.out.println("修改成功！");
-        //list们//todo:===============================================================================
+
+        /*更新tb_flavor中的口味id flavor_id,库存数量stock*/
+        //获取flavor_id
+//        String flavor_id=endpagesservice.getFlavorIdByName(flavor_name);
+//        int nflavor_id=Integer.parseInt(flavor_id);//将口味id转为Int类型
+//        //根据flavor_id和commodity_id查询得到flavor_commodity_id
+//        String flavor_commodity_id=endpagesservice.getFlavorCommodity_Stock(commodity_id,nflavor_id);
+//        int  nflavor_commodity_id=Integer.parseInt(flavor_commodity_id);
+//        //重置库存和口味id
+//        int reset_stock=Integer.parseInt(stock);
+//        endpagesservice.updateFlavorIdAndStock(nflavor_id,reset_stock,nflavor_commodity_id);
+
+        //<label>list们
         List<UserEntity> userlist = endpagesservice.showAllUser();//展示所有用户
         List<CategoryEntity> categorylist = endpagesservice.showAllCategory();//展示所有目录
         List<BrandEntity> brandlist = endpagesservice.getAllBrand();
-        List<GoodsEntity_yrh>goodslist=endpagesservice.getAllGoods();
+        List<GoodsEntity_yrh> goodslist=endpagesservice.getAllGoods();
+        List<OrderGroupEntity_yrh> orderlist=endpagesservice.getAllOrderGroup();
 
         model.addAttribute("userlist", userlist);//所有用户的集合list
         model.addAttribute("categorylist", categorylist);
         model.addAttribute("brandlist", brandlist);
         model.addAttribute("goodslist",goodslist);
+        model.addAttribute("orderlist",orderlist);
 
         return "EndPages/index";
 
@@ -451,19 +552,27 @@ public class EndPagesController {
 
         List<CategoryEntity> categorylist = endpagesservice.showAllCategory();//将全部目录和品牌传递到页面
         List<BrandEntity> brandlist = endpagesservice.getAllBrand();
+        System.out.println("youtube");
+        List<FlavorEntity> flavorlist=endpagesservice.getAllFlavor();
+        System.out.println(flavorlist);
         model.addAttribute("categorylist", categorylist);
         model.addAttribute("brandlist", brandlist);
+        model.addAttribute("flavorlist",flavorlist);
+        System.out.println("you stupid");
         return "EndPages/foodadd";
     }
+
     /*商品添加(详情页中)*/
     @RequestMapping(value = {"/EndPages/commodityAddDetail"})//在详情页中编辑并更新数据库
-    public String commodityAddDetail(HttpServletRequest request, HttpSession httpSession, Model model) {
+    public String commodityAddDetail(HttpServletRequest request, Model model) {
+//    public String commodityAddDetail(@RequestParam("file") MultipartFile file,HttpServletRequest request, Model model) {
 
 //        int commodity_id = Integer.parseInt(request.getParameter("commodity_id"));
         String cname = (String) request.getParameter("cname");//商品名
         String name=(String) request.getParameter("name");//品牌名,从下拉列表中选取
         String sc_name=(String) request.getParameter("sc_name");//二级目录名，从下拉列表中选取
-
+        String flavor_name=(String) request.getParameter("flavor_name");//口味名称
+        String stock=(String) request.getParameter("stock");//商品库存
         String promotional_price = (String) request.getParameter("promotional_price");//品牌名
         String original_price = (String) request.getParameter("original_price");//二级目录名(类型)
         String description = (String) request.getParameter("description");//二级目录名(类型)
@@ -476,12 +585,42 @@ public class EndPagesController {
         int nbrand_id=Integer.parseInt(brand_id);//将商品和二级目录id转为int类型
         int nsc_id=Integer.parseInt(sc_id);
 
-        endpagesservice.addCommodity(cname,nbrand_id,nsc_id,npromotional_price,noriginal_price,description);
+        /*往tb_commodity中添加商品*/
+        String commodity_id=endpagesservice.getCommodityIdByName(nbrand_id,nsc_id,cname);//依据品牌id,二级目录id，商品名查询商品id
+        if (commodity_id==null){//如果该商品原先没有则添加该商品
+            endpagesservice.addCommodity(cname,nbrand_id,nsc_id,npromotional_price,noriginal_price,description);//添加商品
+            commodity_id=endpagesservice.getCommodityIdByName(nbrand_id,nsc_id,cname);//获取插入商品后得到的其id
+            System.out.println("成功添加商品！");
+            model.addAttribute("commodity_response", "成功添加该商品!");
+        }
+        else {//否则只添加库存
+            System.out.println("成功更新商品库存！");//但还是要更新库存
+            model.addAttribute("commodity_response", "成功更新商品库存!");
+        }
+        /*更新口味商品表tb_flavor_commodity的库存*/
 
-        //数据库里商品没有跟店铺关联，所以权且当做同样商品时可以重复出现的
-        System.out.println("成功添加商品！");
-        model.addAttribute("commodity_response", "成功添加该商品!");
+        //获取口味id
+        String flavor_id=endpagesservice.getFlavorIdByName(flavor_name);
+        int nflavor_id=Integer.parseInt(flavor_id);//将商品id,口味id,库存转为Int类型
+        int ncommodity_id=Integer.parseInt(commodity_id);
+        int nstock=Integer.parseInt(stock);
 
+        //判断该商品_口味搭配是否已存在tb_flavor_commodity表中
+        String flavor_commodity_id=endpagesservice.getFlavorCommodity_Stock(ncommodity_id,nflavor_id);
+        if(flavor_commodity_id==null){//插入新记录
+            endpagesservice.addFlavorCommodity(ncommodity_id,nflavor_id,nstock);
+        }else{//只是更新已有记录的库存stock字段
+            int nflavor_commodity_id=Integer.parseInt(flavor_commodity_id);
+            endpagesservice.updateStock(nstock,nflavor_commodity_id);
+        }
+
+        //重新获取相关列表并返回该界面
+        List<CategoryEntity> categorylist = endpagesservice.showAllCategory();//将全部目录、品牌、口味列表传递到页面
+        List<BrandEntity> brandlist = endpagesservice.getAllBrand();
+        List<FlavorEntity> flavorlist=endpagesservice.getAllFlavor();
+        model.addAttribute("categorylist", categorylist);
+        model.addAttribute("brandlist", brandlist);
+        model.addAttribute("flavorlist",flavorlist);
         return "EndPages/foodadd";
     }
 
@@ -498,5 +637,43 @@ public class EndPagesController {
 //        System.out.println(brandlist);
         model.addAttribute("goodslist", goodslist);
         return "EndPages/goodsdetail_yrh";
+    }
+/*订单管理*/
+    //从主页跳转到订单编辑页
+    @RequestMapping(value = {"/orderedit"})
+    public String orderedit(HttpServletRequest request,  Model model) {
+        String order_id = (String) request.getParameter("order_id");
+//        String state = (String) request.getParameter("state");//商品名
+
+        model.addAttribute("order_id",order_id);
+//        model.addAttribute("state", state);
+
+        return "EndPages/orderedit";
+    }
+
+    //订单编辑详情页提交
+    @RequestMapping(value = {"/orderdetialUpdate"})
+    public String orderdetailEdit(HttpServletRequest request,  Model model) {
+        String order_id = (String) request.getParameter("order_id");
+        String state = (String) request.getParameter("state");//商品名
+
+        int nstate=Integer.parseInt(state);
+
+        endpagesservice.updateOrder(nstate,order_id);
+
+        //<label>list们
+        List<UserEntity> userlist = endpagesservice.showAllUser();//展示所有用户
+        List<CategoryEntity> categorylist = endpagesservice.showAllCategory();//展示所有目录
+        List<BrandEntity> brandlist = endpagesservice.getAllBrand();
+        List<GoodsEntity_yrh> goodslist=endpagesservice.getAllGoods();
+        List<OrderGroupEntity_yrh> orderlist=endpagesservice.getAllOrderGroup();
+
+        model.addAttribute("userlist", userlist);//所有用户的集合list
+        model.addAttribute("categorylist", categorylist);
+        model.addAttribute("brandlist", brandlist);
+        model.addAttribute("goodslist",goodslist);
+        model.addAttribute("orderlist",orderlist);
+
+        return "EndPages/index";
     }
 }

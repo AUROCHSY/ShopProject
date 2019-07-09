@@ -3,20 +3,12 @@ package com.example.demo.service.impl;/*
 */
 
 import com.example.demo.dao.EndPagesDao;
-import com.example.demo.entity.BrandEntity;
-import com.example.demo.entity.CategoryEntity;
-import com.example.demo.entity.GoodsEntity_yrh;
-import com.example.demo.entity.UserEntity;
 import com.example.demo.service.EndPagesService;
+
 import org.springframework.stereotype.Service;
-import com.example.demo.dao.UserDao;
-import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.sql.Timestamp;
-
-
+import com.example.demo.entity.*;
+import com.example.demo.entity.FlavorEntity;
 import java.util.List;
 
 @Service
@@ -24,7 +16,6 @@ public class EndPagesServiceImpl implements EndPagesService {
 
     @Autowired
     private EndPagesDao endpagesdao;
-
 /*用户管理======================================*/
     //根据用户名搜索用户
     @Override
@@ -150,15 +141,66 @@ public class EndPagesServiceImpl implements EndPagesService {
     public int addCommodity(String cname,int brand_id,int second_category_id,double promotional_price,double original_price,String description){
         return endpagesdao.addCommodity(cname,brand_id,second_category_id,promotional_price,original_price,description);
     }
-//    //删除用户-不用做
-//    @Override
-//    public int deleteUser(int user_id) {
-//        return endpagesdao.deleteUser(user_id);
-//    }
-//
-//    //删除购物车
-//    @Override
-//    public int deleteCart(int user_id) {
-//        return endpagesdao.deleteCart(user_id);
-//    }
+
+    //根据商品名获取商品id
+    @Override
+    //根据品牌id、二级目录id、商品名获取商品id
+    public String getCommodityIdByName(int brand_id,int second_category_id,String cname){
+        return endpagesdao.getCommodityIdByName(brand_id,second_category_id,cname);
+    }
+    //根据口味名获取口味id
+    @Override
+    public String getFlavorIdByName(String flavor_name){
+        return endpagesdao.getFlavorIdByName(flavor_name);
+    }
+    //获取全部口味
+    @Override
+    public List<FlavorEntity> getAllFlavor(){
+        return endpagesdao.getAllFlavor();
+    }
+
+    //根据flavor_id和commodity_id查询tb_flavor_commodity是否存在记录
+    @Override
+    public String  getFlavorCommodity_Stock(int commodity_id,int flavor_id){
+        return  endpagesdao.getFlavorCommodity_Stock(commodity_id,flavor_id);
+    }
+
+    //根据flavor_commodity_id更新tb_flavor_commodity中的库存
+    @Override
+    public int updateStock(int stock,int flavor_commodity_id){
+        return endpagesdao.updateStock(stock,flavor_commodity_id);
+    }
+
+    //tb_flavor_commodity插入新数据
+    @Override
+    public int addFlavorCommodity(int commodity_id,int flavor_id,int stock){
+        return endpagesdao.addFlavorCommodity(commodity_id,flavor_id,stock);
+    }
+
+        //tb_flavor_commodity更新口味id 和 库存stock
+    @Override
+    public int updateFlavorIdAndStock(int flavor_id,int stock,int flavor_commodity_id){
+        return endpagesdao.updateFlavorIdAndStock(flavor_id,stock,flavor_commodity_id);
+    }
+
+/*管理员登录=====================================================*/
+//用户名密码验证，返回admin_id
+    @Override
+    public List<AdminEntity_yrh> admin_login(String admin_name, String password){
+        return endpagesdao.admin_login(admin_name,password);
+    }
+
+/*订单管理=================================================*/
+// 整合订单表tb_order,订单详情表tb_order_detail,商品表commodity_id，
+// 返回订单id,订单状态，订单详情id,商品数量，商品名称(有多个，字符串/数组的形式？)
+    @Override
+    public List<OrderGroupEntity_yrh> getAllOrderGroup(){
+        return endpagesdao.getAllOrderGroup();
+    }
+
+    //编辑订单状态
+    @Override
+    public int updateOrder(int state,String order_id){
+        return endpagesdao.updateOrder(state,order_id);
+    }
 }

@@ -24,7 +24,7 @@
                                 <!--</div>-->
                                 <div class="news_title">
                                     <label class="text_center">商品名称：</label>
-                                    <input type="text"placeholder="填写商品名称" name="cname" th:value="${cname}" style="border: none;text-align: center;">
+                                    <input type="text"placeholder="填写商品名称" name="cname" th:value="${cname}" style="border: none;text-align: center;" required="required">
                                 </div>
                                 <div class="news_title">
                                     <label class="text_center">品牌：</label>
@@ -39,18 +39,37 @@
                                     </select>
                                 </div>
                                 <div class="news_title">
+                                    <label class="text_center">口味：</label>
+                                    <select class="form-control" name="flavor_name"  style="width:100px;margin-left: 210px;">
+                                        <option th:each="f:${flavorlist}" th:value="${f.flavor_name}" th:text="${f.flavor_name}">初始值</option>
+                                    </select>
+                                </div>
+                                <div class="news_title">
+                                    <label class="text_center">添加数量：</label>
+                                    <input type="text"placeholder="填写添加数量" name="stock" th:value="${stock}" style="border: none;text-align: center;" required="true">
+                                    <!--<input type="number" min="0" max="100" step="1"/>-->
+                                </div>
+                                <div class="news_title">
                                     <label class="text_center">促销价：</label>
-                                    <input type="text"placeholder="填写促销价" name="promotional_price" th:value="${promotional_price}" style="border: none;text-align: center;">
+                                    <input type="text"placeholder="填写促销价" name="promotional_price" th:value="${promotional_price}" style="border: none;text-align: center;" required="true">
                                 </div>
                                 <div class="news_title">
                                     <label class="text_center">原价：</label>
-                                    <input type="text"placeholder="填写原价" name="original_price" th:value="${original_price}" style="border: none;text-align: center;">
+                                    <input type="text"placeholder="填写原价" name="original_price" th:value="${original_price}" style="border: none;text-align: center;" required="true">
                                 </div>
                                 <div class="news_title">
                                     <label class="text_center">商品描述：</label>
-                                    <input type="text" name="description" th:value="${description}" style="border: none;text-align: center;">
+                                    <input type="text" name="description" th:value="${description}" style="border: none;text-align: center;" required="true">
                                 </div>
-                                <button type="submit" class="release_news_ok_btn text_center" style="margin-left: 250px" onclick="alert('保存成功!')">保存</button>
+                                <!--<div class="news_title">-->
+                                <!--<label class="text_center">图片</label>-->
+                                <!--<input type="file" placeholder="选择图片" name="img">-->
+                                <!--</div>-->
+                                <button type="submit" class="release_news_ok_btn text_center" style="margin-left: 250px">保存</button>
+                                <!--<input type="submit" class="release_news_ok_btn text_center" style="margin-left: 250px">-->
+                                <div style="margin-left: 250px">
+                                    <input name="fc_response" th:value="${commodity_response}" style="border: none;text-align: center;font-size: 16px; " readonly="true">
+                                </div>
                             </div>
                         </div>
                     </form>

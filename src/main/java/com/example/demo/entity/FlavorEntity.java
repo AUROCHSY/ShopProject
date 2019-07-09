@@ -11,6 +11,6 @@ public class FlavorEntity {
 
     private int flavor_id;            //主键
 
-    private String name;
+    private String flavor_name;
 
 }

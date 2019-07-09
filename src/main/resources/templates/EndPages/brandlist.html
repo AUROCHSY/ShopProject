@@ -25,7 +25,7 @@
                 </div>
                 <div class="list">
                     <ul class="list_h">
-                        <li class="b20"><label><input type="checkbox" name="newsId"><span>序号</span></label></li>
+                        <li class="b20"><label><span>序号</span></label></li>
                         <li class="b20"><label>品牌名称</label></li>
                         <li class="b20"><label>负责人</label></li>
                         <li class="b20"><label>联系电话</label></li>
@@ -41,9 +41,17 @@
                                 <li class="b20"><input name="phone" th:value="${b.phone}" style="border: none;text-align: center;" readonly="true"></li>
                                 <li class="b20"><input name="address" th:value="${b.address}" style="border: none;text-align: center;" readonly="true"></li>
 
-                                <input type="submit" name="submitInput" value="编辑" class="inputbutton">
-                                <input type="submit" name="submitInput"  value="删除" class="inputbutton"  onclick="if(!confirm('are you ok?')){return false;}">
-
+                                <li class="b60">
+                                    <div style="margin-left: auto;margin-right: auto">
+                                        <div class="edit_btn df_btn text_center" style="display: inline-block">
+                                            <input type="submit" name="submitInput" value="编辑" class="niceinput" style="border:none;background-color:inherit;color:white;font-size:16px;margin-top:3px;">
+                                        </div>
+                                        <!--<a href="EndPages/ItemDeleteItem?newsId=${newsId}"><div class="delete_btn df_btn fl text_center">删除</div></a>-->
+                                        <div class="delete_btn df_btn text_center"  style="display: inline-block">
+                                            <input type="submit" name="submitInput"  value="删除" class="niceinput" style="border:none;background-color:inherit;color:white;font-size:16px;margin-top:3px;" onclick="if(!confirm('are you ok?')){return false;}">
+                                        </div>
+                                    </div>
+                                </li>
                             </form>
                         </ul>
                     </div>

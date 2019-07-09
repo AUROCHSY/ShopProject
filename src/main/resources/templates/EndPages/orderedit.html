@@ -1,10 +1,9 @@
-
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<title></title>
 	<meta charset="utf-8">
-    <link href="css/main.css" rel="stylesheet">
+    <link href="EndPages/css/main.css" rel="stylesheet">
 </head>
 <body>
 <!-- 订单管理 -->
@@ -17,20 +16,24 @@
                         <li class="b80"><label>订单编辑</label></li>
                     </ul>
                     <div class="list_b_c" id="release_news_in">
-                        <div class="release_news">
-                        	<div class="news_title">
-                               <label class="text_center">订单状态：</label>
-                                <select class="column_name_release">
-                                    <option>待付款</option>
-                                    <option>待发货</option>
-                                    <option>待收货</option>
-                                    <option>待评价</option>
-                                </select>
-                                 
+                        <form method="post" action="/orderdetialUpdate">
+                            <div class="release_news">
+                                <div class="news_title">
+                                    <label class="text_center">订单ID：</label>
+                                    <input type="text" name="order_id" th:value="${order_id}" style="border: none;text-align: center;" readonly="true">
+                                </div>
+                                <div class="news_title">
+                                   <label class="text_center">订单状态：</label>
+                                    <select name="state" class="column_name_release" style="width:100px;margin-left: 210px;">
+                                        <option value="0">待付款</option>
+                                        <option value="1">待发货</option>
+                                        <option value="2">待收货</option>
+                                        <option value="3">待评价</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="release_news_ok_btn text_center" style="margin-left: 250px" onclick="alert('保存成功!')">保存</button>
                             </div>
-
-                            <div class="release_news_ok_btn text_center">保存</div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>

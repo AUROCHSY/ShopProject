@@ -24,3 +24,11 @@
     background-color: gainsboro;
     border: none;
 }
+/*适用于input标签，外层套个div使用，div的class设为class="edit_btn df_btn fl text_center"()*/
+.niceinput{
+    border:none;
+    background-color:inherit;
+    color:white;
+    font-size:16px;
+    margin-top:3px;
+}
