@@ -22,12 +22,13 @@ public class EndPagesController {
     private EndPagesService endpagesservice;
 
     /*主页,全部数据展示====================================================*/
+    /*各功能的列表数据初始化都在这里=========================================*/
     /*后台登录页*/
     @RequestMapping(value = {"/EndPagesLogin"})//
     public String EndPagesLogin(HttpServletRequest request, HttpSession httpSession, Model model) {
         return "EndPages/endpagelogin_yrh";
     }
-    /*管理台主页*/
+    /*管理台主页==各功能数据初始化=============================================*/
     @RequestMapping(value = {"/EndPages"})//默认展示用户管理
     public String index(HttpServletRequest request, HttpSession httpSession, Model model) {
 
@@ -57,8 +58,8 @@ public class EndPagesController {
             model.addAttribute("brandlist", brandlist);
             model.addAttribute("goodslist",goodslist);
             model.addAttribute("orderlist",orderlist);
-            System.out.println("I GOT ORDERLIST!!!!!!");
-            System.out.println(orderlist);
+//            System.out.println("I GOT ORDERLIST!!!!!!");
+//            System.out.println(orderlist);
             //当前登录用户实体
             model.addAttribute("adminentity;",adminlist);
 
@@ -66,19 +67,28 @@ public class EndPagesController {
 //            List<ArrayList<String>> nn_orderlist=new ArrayList<>();
 //            String[][] arr=new String[orderlist.size()][20];
             /*返回一个每个对象为"一个order聚合类 和 一个order的所有商品"的list*/
-//            List<OrderAllInOneEntity_yrh> order_all_in_one_list=new ArrayList<>();
-//            OrderAllInOneEntity_yrh order_all_in_one=new OrderAllInOneEntity_yrh();
-//            for(int i=0;i<orderlist.size();i++){
-//                order_all_in_one.orderOne=orderlist.get(i);//一个订单聚合类对象
-//
-//                String one_order_cname=orderlist.get(i).cname_group;//一个订单的全部商品：用逗号连接的字符串
-//                String[] sgroup=one_order_cname.split(",");//每个订单的商品切割后存到一个临时数组中
-//                order_all_in_one.cnameOneLineArr=sgroup;//一个订单的全部商品：一维数组
-//
-//                order_all_in_one_list.add(order_all_in_one);
+            List<OrderAllInOneEntity_yrh> order_all_in_one_list=new ArrayList<>();
+            OrderAllInOneEntity_yrh order_all_in_one;
+            for(int i=0;i<orderlist.size();i++){
+                order_all_in_one=new OrderAllInOneEntity_yrh();//该对象变量每次重新赋值前都要重新初始化
+                order_all_in_one.orderOne=orderlist.get(i);//一个订单聚合类对象
+//                System.out.println("look here!=================================================");
+//                System.out.println(order_all_in_one.orderOne);
+                String one_order_cname=orderlist.get(i).cname_group;//一个订单的全部商品：用逗号连接的字符串
+                String[] sgroup=one_order_cname.split(",");//每个订单的商品切割后存到一个临时数组中
+                order_all_in_one.cnameOneLineArr=sgroup;//一个订单的全部商品：一维数组
+
+                order_all_in_one_list.add(order_all_in_one);
+            }
+            //输出得到的order_all_in_one_list debug
+//            for(int i=0;i<order_all_in_one_list.size();i++){
+//                System.out.println("order"+i+"========================");
+//                System.out.println(order_all_in_one_list.get(i));
+//                for (int j=0;j<order_all_in_one_list.get(i).cnameOneLineArr.length;j++){
+//                    System.out.println(order_all_in_one_list.get(i).cnameOneLineArr[j]);
+//                }
 //            }
-//
-//            model.addAttribute("order_all_in_one_list",order_all_in_one_list);
+            model.addAttribute("order_all_in_one_list",order_all_in_one_list);
 
             /*返回一个二维数组，每行代表一个订单的商品*/
 //            String[][] arr=new String[orderlist.size()][];//二维数组，一维为每个订单id的商品，二维为商品字符串的切割结果
@@ -565,7 +575,7 @@ public class EndPagesController {
     /*商品添加(详情页中)*/
     @RequestMapping(value = {"/EndPages/commodityAddDetail"})//在详情页中编辑并更新数据库
     public String commodityAddDetail(HttpServletRequest request, Model model) {
-//    public String commodityAddDetail(@RequestParam("file") MultipartFile file,HttpServletRequest request, Model model) {
+//    public String commodityAddDetail(@RequestParam("file") MultipartFile file,HttpServletRequest request, Model model) {//图片上传功能
 
 //        int commodity_id = Integer.parseInt(request.getParameter("commodity_id"));
         String cname = (String) request.getParameter("cname");//商品名
@@ -638,7 +648,7 @@ public class EndPagesController {
         model.addAttribute("goodslist", goodslist);
         return "EndPages/goodsdetail_yrh";
     }
-/*订单管理*/
+/*订单管理==================================================*/
     //从主页跳转到订单编辑页
     @RequestMapping(value = {"/orderedit"})
     public String orderedit(HttpServletRequest request,  Model model) {
