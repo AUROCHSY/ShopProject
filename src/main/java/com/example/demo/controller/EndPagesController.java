@@ -24,28 +24,27 @@ public class EndPagesController {
     /*主页,全部数据展示====================================================*/
     /*各功能的列表数据初始化都在这里=========================================*/
     /*后台登录页*/
-    @RequestMapping(value = {"/EndPagesLogin"})//
-    public String EndPagesLogin(HttpServletRequest request, HttpSession httpSession, Model model) {
+    @RequestMapping(value = {"/EndPagesLogin"})//跳转到登录页
+    public String EndPagesLogin() {
         return "EndPages/endpagelogin_yrh";
     }
+
     /*管理台主页==各功能数据初始化=============================================*/
     @RequestMapping(value = {"/EndPages"})//默认展示用户管理
-    public String index(HttpServletRequest request, HttpSession httpSession, Model model) {
+    public String index(HttpServletRequest request, Model model) {
+            /*处理管理员登录请求*/
+            String admin_name = (String) request.getParameter("admin_name");
+            String password = (String) request.getParameter("password");
+            List<AdminEntity_yrh> adminlist = endpagesservice.admin_login(admin_name, password);
+            System.out.println(adminlist);
+            if (adminlist.size() == 0) {
+                System.out.println("用户名或密码错误！");
+                model.addAttribute("login_response", "用户名或密码错误！");
+                return "EndPages/endpagelogin_yrh";
+            } else {
+                System.out.println("登录成功");
+            }
 
-        /*处理管理员登录请求*/
-        String admin_name = (String) request.getParameter("admin_name");
-        String password = (String) request.getParameter("password");
-//        admin_name="A";password="B";
-        List<AdminEntity_yrh> adminlist = endpagesservice.admin_login(admin_name,password);
-        System.out.println(adminlist);
-        if(adminlist.size()==0){
-            System.out.println("用户名或密码错误！");
-            model.addAttribute("login_response", "用户名或密码错误！");
-            return "EndPages/endpagelogin_yrh";
-        }
-        else{
-            System.out.println("登录成功");
-            model.addAttribute("login_response","登录成功！");
             /*返回实体类到主页*/
             List<UserEntity> userlist = endpagesservice.showAllUser();//展示所有用户
             List<CategoryEntity> categorylist = endpagesservice.showAllCategory();//展示所有目录
@@ -58,63 +57,58 @@ public class EndPagesController {
             model.addAttribute("brandlist", brandlist);
             model.addAttribute("goodslist",goodslist);
             model.addAttribute("orderlist",orderlist);
-//            System.out.println("I GOT ORDERLIST!!!!!!");
-//            System.out.println(orderlist);
+
             //当前登录用户实体
-            model.addAttribute("adminentity;",adminlist);
+            model.addAttribute("adminlist",adminlist);
 
 
-//            List<ArrayList<String>> nn_orderlist=new ArrayList<>();
-//            String[][] arr=new String[orderlist.size()][20];
             /*返回一个每个对象为"一个order聚合类 和 一个order的所有商品"的list*/
             List<OrderAllInOneEntity_yrh> order_all_in_one_list=new ArrayList<>();
             OrderAllInOneEntity_yrh order_all_in_one;
             for(int i=0;i<orderlist.size();i++){
                 order_all_in_one=new OrderAllInOneEntity_yrh();//该对象变量每次重新赋值前都要重新初始化
                 order_all_in_one.orderOne=orderlist.get(i);//一个订单聚合类对象
-//                System.out.println("look here!=================================================");
-//                System.out.println(order_all_in_one.orderOne);
                 String one_order_cname=orderlist.get(i).cname_group;//一个订单的全部商品：用逗号连接的字符串
                 String[] sgroup=one_order_cname.split(",");//每个订单的商品切割后存到一个临时数组中
                 order_all_in_one.cnameOneLineArr=sgroup;//一个订单的全部商品：一维数组
 
                 order_all_in_one_list.add(order_all_in_one);
             }
-            //输出得到的order_all_in_one_list debug
-//            for(int i=0;i<order_all_in_one_list.size();i++){
-//                System.out.println("order"+i+"========================");
-//                System.out.println(order_all_in_one_list.get(i));
-//                for (int j=0;j<order_all_in_one_list.get(i).cnameOneLineArr.length;j++){
-//                    System.out.println(order_all_in_one_list.get(i).cnameOneLineArr[j]);
-//                }
-//            }
+
             model.addAttribute("order_all_in_one_list",order_all_in_one_list);
 
-            /*返回一个二维数组，每行代表一个订单的商品*/
-//            String[][] arr=new String[orderlist.size()][];//二维数组，一维为每个订单id的商品，二维为商品字符串的切割结果
-//            for(int i=0;i<orderlist.size();i++){
-//                String one_order_cname=orderlist.get(i).cname_group;//一个订单的全部商品：用逗号连接的字符串
-//                String[] sgroup=one_order_cname.split(",");//每个订单的商品切割后存到一个临时数组中
-//
-//                arr[i]=new String[sgroup.length];//初始化当前行长度(每行代表一个订单的全部商品)
-//                System.out.println("This is all the commodity of order: "+i);
-//                for (int j=0;j<sgroup.length;j++){
-//                    System.out.println(sgroup[j]);
-//                    arr[i][j]=sgroup[j];
-//                }
-//            }
-//            model.addAttribute("all_commodity",arr);
-
-
-//            order_all_in_one.orderlist=orderlist;
-//            order_all_in_one.cnameArr=arr;
-//            System.out.println("so amazing!!!!!!!!!!!!");
-//            System.out.println(order_all_in_one.orderlist);
-//            System.out.println(order_all_in_one.cnameArr);
             return "EndPages/index";
+}
+    /*管理台主页：用于返回跳转==============================================*/
+    @RequestMapping(value = {"/EndPagesIndex"})
+    public String indexForReturn(HttpServletRequest request, Model model) {
+            /*返回实体类到主页*/
+        List<UserEntity> userlist = endpagesservice.showAllUser();//展示所有用户
+        List<CategoryEntity> categorylist = endpagesservice.showAllCategory();//展示所有目录
+        List<BrandEntity> brandlist = endpagesservice.getAllBrand();
+        List<GoodsEntity_yrh> goodslist=endpagesservice.getAllGoods();
+        List<OrderGroupEntity_yrh> orderlist=endpagesservice.getAllOrderGroup();
 
+        model.addAttribute("userlist", userlist);//所有用户的集合list
+        model.addAttribute("categorylist", categorylist);
+        model.addAttribute("brandlist", brandlist);
+        model.addAttribute("goodslist",goodslist);
+        model.addAttribute("orderlist",orderlist);
+
+            /*返回一个每个对象为"一个order聚合类 和 一个order的所有商品"的list*/
+        List<OrderAllInOneEntity_yrh> order_all_in_one_list=new ArrayList<>();
+        OrderAllInOneEntity_yrh order_all_in_one;
+        for(int i=0;i<orderlist.size();i++){
+            order_all_in_one=new OrderAllInOneEntity_yrh();//该对象变量每次重新赋值前都要重新初始化
+            order_all_in_one.orderOne=orderlist.get(i);//一个订单聚合类对象
+            String one_order_cname=orderlist.get(i).cname_group;//一个订单的全部商品：用逗号连接的字符串
+            String[] sgroup=one_order_cname.split(",");//每个订单的商品切割后存到一个临时数组中
+            order_all_in_one.cnameOneLineArr=sgroup;//一个订单的全部商品：一维数组
+
+            order_all_in_one_list.add(order_all_in_one);
         }
-
+        model.addAttribute("order_all_in_one_list",order_all_in_one_list);
+        return "EndPages/index";
     }
 
     //主页上退出按钮的路由
@@ -242,6 +236,22 @@ public class EndPagesController {
             model.addAttribute("brandlist", brandlist);
             model.addAttribute("goodslist",goodslist);
             model.addAttribute("orderlist",orderlist);
+
+            /*返回一个每个对象为"一个order聚合类 和 一个order的所有商品"的list*/
+            List<OrderAllInOneEntity_yrh> order_all_in_one_list=new ArrayList<>();
+            OrderAllInOneEntity_yrh order_all_in_one;
+            for(int i=0;i<orderlist.size();i++){
+                order_all_in_one=new OrderAllInOneEntity_yrh();//该对象变量每次重新赋值前都要重新初始化
+                order_all_in_one.orderOne=orderlist.get(i);//一个订单聚合类对象
+                String one_order_cname=orderlist.get(i).cname_group;//一个订单的全部商品：用逗号连接的字符串
+                String[] sgroup=one_order_cname.split(",");//每个订单的商品切割后存到一个临时数组中
+                order_all_in_one.cnameOneLineArr=sgroup;//一个订单的全部商品：一维数组
+
+                order_all_in_one_list.add(order_all_in_one);
+            }
+
+            model.addAttribute("order_all_in_one_list",order_all_in_one_list);
+
             return "EndPages/index";
         } else {
             System.out.println("提交的操作类型错误！！");
@@ -272,6 +282,20 @@ public class EndPagesController {
         model.addAttribute("brandlist", brandlist);
         model.addAttribute("goodslist",goodslist);
         model.addAttribute("orderlist",orderlist);
+                    /*返回一个每个对象为"一个order聚合类 和 一个order的所有商品"的list*/
+        List<OrderAllInOneEntity_yrh> order_all_in_one_list=new ArrayList<>();
+        OrderAllInOneEntity_yrh order_all_in_one;
+        for(int i=0;i<orderlist.size();i++){
+            order_all_in_one=new OrderAllInOneEntity_yrh();//该对象变量每次重新赋值前都要重新初始化
+            order_all_in_one.orderOne=orderlist.get(i);//一个订单聚合类对象
+            String one_order_cname=orderlist.get(i).cname_group;//一个订单的全部商品：用逗号连接的字符串
+            String[] sgroup=one_order_cname.split(",");//每个订单的商品切割后存到一个临时数组中
+            order_all_in_one.cnameOneLineArr=sgroup;//一个订单的全部商品：一维数组
+
+            order_all_in_one_list.add(order_all_in_one);
+        }
+
+        model.addAttribute("order_all_in_one_list",order_all_in_one_list);
         return "EndPages/index";
 
     }
@@ -371,6 +395,20 @@ public class EndPagesController {
             model.addAttribute("brandlist", brandlist);
             model.addAttribute("goodslist",goodslist);
             model.addAttribute("orderlist",orderlist);
+                        /*返回一个每个对象为"一个order聚合类 和 一个order的所有商品"的list*/
+            List<OrderAllInOneEntity_yrh> order_all_in_one_list=new ArrayList<>();
+            OrderAllInOneEntity_yrh order_all_in_one;
+            for(int i=0;i<orderlist.size();i++){
+                order_all_in_one=new OrderAllInOneEntity_yrh();//该对象变量每次重新赋值前都要重新初始化
+                order_all_in_one.orderOne=orderlist.get(i);//一个订单聚合类对象
+                String one_order_cname=orderlist.get(i).cname_group;//一个订单的全部商品：用逗号连接的字符串
+                String[] sgroup=one_order_cname.split(",");//每个订单的商品切割后存到一个临时数组中
+                order_all_in_one.cnameOneLineArr=sgroup;//一个订单的全部商品：一维数组
+
+                order_all_in_one_list.add(order_all_in_one);
+            }
+
+            model.addAttribute("order_all_in_one_list",order_all_in_one_list);
             return "EndPages/index";
         } else {
             System.out.println("提交的操作类型错误！！");
@@ -402,6 +440,21 @@ public class EndPagesController {
         model.addAttribute("brandlist", brandlist);
         model.addAttribute("goodslist",goodslist);
         model.addAttribute("orderlist",orderlist);
+
+                    /*返回一个每个对象为"一个order聚合类 和 一个order的所有商品"的list*/
+        List<OrderAllInOneEntity_yrh> order_all_in_one_list=new ArrayList<>();
+        OrderAllInOneEntity_yrh order_all_in_one;
+        for(int i=0;i<orderlist.size();i++){
+            order_all_in_one=new OrderAllInOneEntity_yrh();//该对象变量每次重新赋值前都要重新初始化
+            order_all_in_one.orderOne=orderlist.get(i);//一个订单聚合类对象
+            String one_order_cname=orderlist.get(i).cname_group;//一个订单的全部商品：用逗号连接的字符串
+            String[] sgroup=one_order_cname.split(",");//每个订单的商品切割后存到一个临时数组中
+            order_all_in_one.cnameOneLineArr=sgroup;//一个订单的全部商品：一维数组
+
+            order_all_in_one_list.add(order_all_in_one);
+        }
+
+        model.addAttribute("order_all_in_one_list",order_all_in_one_list);
 
         return "EndPages/index";
 
@@ -493,6 +546,22 @@ public class EndPagesController {
             model.addAttribute("brandlist", brandlist);
             model.addAttribute("goodslist",goodslist);
             model.addAttribute("orderlist",orderlist);
+
+                        /*返回一个每个对象为"一个order聚合类 和 一个order的所有商品"的list*/
+            List<OrderAllInOneEntity_yrh> order_all_in_one_list=new ArrayList<>();
+            OrderAllInOneEntity_yrh order_all_in_one;
+            for(int i=0;i<orderlist.size();i++){
+                order_all_in_one=new OrderAllInOneEntity_yrh();//该对象变量每次重新赋值前都要重新初始化
+                order_all_in_one.orderOne=orderlist.get(i);//一个订单聚合类对象
+                String one_order_cname=orderlist.get(i).cname_group;//一个订单的全部商品：用逗号连接的字符串
+                String[] sgroup=one_order_cname.split(",");//每个订单的商品切割后存到一个临时数组中
+                order_all_in_one.cnameOneLineArr=sgroup;//一个订单的全部商品：一维数组
+
+                order_all_in_one_list.add(order_all_in_one);
+            }
+
+            model.addAttribute("order_all_in_one_list",order_all_in_one_list);
+
             return "EndPages/index";
         } else {
             System.out.println("提交的操作类型错误！！");
@@ -551,6 +620,21 @@ public class EndPagesController {
         model.addAttribute("brandlist", brandlist);
         model.addAttribute("goodslist",goodslist);
         model.addAttribute("orderlist",orderlist);
+
+                    /*返回一个每个对象为"一个order聚合类 和 一个order的所有商品"的list*/
+        List<OrderAllInOneEntity_yrh> order_all_in_one_list=new ArrayList<>();
+        OrderAllInOneEntity_yrh order_all_in_one;
+        for(int i=0;i<orderlist.size();i++){
+            order_all_in_one=new OrderAllInOneEntity_yrh();//该对象变量每次重新赋值前都要重新初始化
+            order_all_in_one.orderOne=orderlist.get(i);//一个订单聚合类对象
+            String one_order_cname=orderlist.get(i).cname_group;//一个订单的全部商品：用逗号连接的字符串
+            String[] sgroup=one_order_cname.split(",");//每个订单的商品切割后存到一个临时数组中
+            order_all_in_one.cnameOneLineArr=sgroup;//一个订单的全部商品：一维数组
+
+            order_all_in_one_list.add(order_all_in_one);
+        }
+
+        model.addAttribute("order_all_in_one_list",order_all_in_one_list);
 
         return "EndPages/index";
 
@@ -652,7 +736,7 @@ public class EndPagesController {
     //从主页跳转到订单编辑页
     @RequestMapping(value = {"/orderedit"})
     public String orderedit(HttpServletRequest request,  Model model) {
-        String order_id = (String) request.getParameter("order_id");
+         int order_id = Integer.parseInt(request.getParameter("order_id"));
 //        String state = (String) request.getParameter("state");//商品名
 
         model.addAttribute("order_id",order_id);
@@ -664,7 +748,7 @@ public class EndPagesController {
     //订单编辑详情页提交
     @RequestMapping(value = {"/orderdetialUpdate"})
     public String orderdetailEdit(HttpServletRequest request,  Model model) {
-        String order_id = (String) request.getParameter("order_id");
+        int order_id =Integer.parseInt(request.getParameter("order_id"));
         String state = (String) request.getParameter("state");//商品名
 
         int nstate=Integer.parseInt(state);
@@ -683,6 +767,21 @@ public class EndPagesController {
         model.addAttribute("brandlist", brandlist);
         model.addAttribute("goodslist",goodslist);
         model.addAttribute("orderlist",orderlist);
+
+                    /*返回一个每个对象为"一个order聚合类 和 一个order的所有商品"的list*/
+        List<OrderAllInOneEntity_yrh> order_all_in_one_list=new ArrayList<>();
+        OrderAllInOneEntity_yrh order_all_in_one;
+        for(int i=0;i<orderlist.size();i++){
+            order_all_in_one=new OrderAllInOneEntity_yrh();//该对象变量每次重新赋值前都要重新初始化
+            order_all_in_one.orderOne=orderlist.get(i);//一个订单聚合类对象
+            String one_order_cname=orderlist.get(i).cname_group;//一个订单的全部商品：用逗号连接的字符串
+            String[] sgroup=one_order_cname.split(",");//每个订单的商品切割后存到一个临时数组中
+            order_all_in_one.cnameOneLineArr=sgroup;//一个订单的全部商品：一维数组
+
+            order_all_in_one_list.add(order_all_in_one);
+        }
+
+        model.addAttribute("order_all_in_one_list",order_all_in_one_list);
 
         return "EndPages/index";
     }

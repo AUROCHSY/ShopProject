@@ -92,7 +92,7 @@ public interface EndPagesDao {
 
 /*品牌管理===============================================================================================================*/
 
-    //根据品牌名名搜索用户
+    //根据品牌名搜索品牌
     @Select(value = "select * from demo.tb_brand where name REGEXP #{arg0} ")
     List<BrandEntity> searchBrand(String key);
 
@@ -190,7 +190,7 @@ public interface EndPagesDao {
 /*订单管理=================================================*/
 // 整合订单表tb_order,订单详情表tb_order_detail,商品表commodity_id，
 // 返回订单id,订单状态，订单详情id,商品数量，商品名称(有多个，字符串/数组的形式？)
-@Select(value="SELECT o.order_id,o.state,od.detail_id,GROUP_CONCAT(od.quantity) quantity_group, GROUP_CONCAT(c.cname) cname_group" +
+@Select(value="SELECT o.order_id,o.state,GROUP_CONCAT(od.quantity) quantity_group, GROUP_CONCAT(c.cname) cname_group" +
         " FROM tb_order o LEFT JOIN tb_orders_detail od ON o.order_id = od.order_id" +
         " LEFT JOIN tb_commodity c ON od.commodity_id=c.commodity_id" +
         " GROUP BY o.order_id")
@@ -198,5 +198,5 @@ List<OrderGroupEntity_yrh> getAllOrderGroup();
 
 //编辑订单状态
 @Update(value="update tb_order SET state=#{arg0} WHERE order_id=#{arg1};")
-int updateOrder(int state,String order_id);
+int updateOrder(int state,int order_id);
 }

@@ -200,7 +200,7 @@ public class EndPagesServiceImpl implements EndPagesService {
 
     //编辑订单状态
     @Override
-    public int updateOrder(int state,String order_id){
+    public int updateOrder(int state,int order_id){
         return endpagesdao.updateOrder(state,order_id);
     }
 }

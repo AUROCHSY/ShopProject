@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @Data
 public class OrderEntity {
 
-    private String order_id;    //主键
+    private int order_id;    //主键
     private int user_id;        //外键
     private int address_id;    //外键
 

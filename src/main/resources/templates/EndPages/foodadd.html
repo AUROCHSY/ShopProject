@@ -8,8 +8,8 @@
 <body>
 <!-- 食品管理 -->
             <div class="AccountManagement_c" id="NewsManagement_c">
-                <h3>食品管理 
-                   
+                <h3>食品管理
+                    <a href="/EndPagesIndex" ><div class="edit_btn df_btn text_center" style="display: inline-block">返回</div></a>
                 </h3>
                 <div class="list" id="release_news">
                     <ul class="list_h">
@@ -18,10 +18,6 @@
                     <form method="post" action="/EndPages/commodityAddDetail">
                         <div class="list_b_c" id="release_news_in">
                             <div class="release_news">
-                                <!--<div class="news_title">-->
-                                    <!--<label class="text_center">商品ID：</label>-->
-                                    <!--<input type="text" name="commodity_id" th:value="${commodity_id}" style="border: none;text-align: center;" readonly="true">-->
-                                <!--</div>-->
                                 <div class="news_title">
                                     <label class="text_center">商品名称：</label>
                                     <input type="text"placeholder="填写商品名称" name="cname" th:value="${cname}" style="border: none;text-align: center;" required="required">

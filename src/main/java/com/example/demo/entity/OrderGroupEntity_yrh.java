@@ -8,9 +8,9 @@ import java.sql.Timestamp;
 
 @Data
 public class OrderGroupEntity_yrh {
-    private String order_id; //订单id(tb_order和tb_order_detial都有)
+    private int order_id; //订单id(tb_order和tb_order_detial都有)
 
-    private int detail_id;    //订单详情id
+//    private int detail_id;    //订单详情id
     public String cname_group;    //tb_order_detial里的
     private String quantity_group; //商品数量，tb_order_detial里的
     private int state;          //0：待付款     1：待发货   2：收获    3：待评价

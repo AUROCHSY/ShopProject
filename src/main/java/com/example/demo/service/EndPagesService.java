@@ -80,5 +80,5 @@ List<AdminEntity_yrh> admin_login(String admin_name, String password);
     List<OrderGroupEntity_yrh> getAllOrderGroup();
 
     //编辑订单状态
-    int updateOrder(int state,String order_id);
+    int updateOrder(int state,int order_id);
 }

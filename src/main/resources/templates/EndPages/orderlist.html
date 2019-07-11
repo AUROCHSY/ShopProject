@@ -31,7 +31,7 @@
                         <div>
                             <ul class="list_b"  th:each="oa : ${order_all_in_one_list}">
                                 <form method="post" action="/orderedit">
-                                    <li style="width:35%"><input name="commodity_id" th:value="${oa.orderOne.order_id}" style="width:100%;border: none;text-align: center;" readonly="true"></li>
+                                    <li style="width:35%"><input name="order_id" th:value="${oa.orderOne.order_id}" style="width:100%;border: none;text-align: center;" readonly="true"></li>
                                     <!--<li style="width:17%"><input name="cname" th:value="${oa.orderOne.cname_group}" style="width:100%;border: none;text-align: center;" readonly="true"></li>-->
                                     <li style="width:17%">
                                         <select class="form-control" name="name"  style="width:100%;">
@@ -72,18 +72,18 @@
                         </div><!--能正常显示全部内容，不过一个订单的商品是以字符串形式显示的-->
                     </div>
 
-                    <div class="pull_page">
-                        <div class="fl pull_page_up">上一页</div>
-                            <ul>
-                                <li class="on">1</li>
-                                <li>2</li>
-                                <li>3</li>
-                                <li>4</li>
-                                <li class="pull_page_df_btn">…</li>
-                                <li>12</li>
-                            </ul>
-                        <div class="fl pull_page_down">下一页</div>
-                    </div>
+                    <!--<div class="pull_page">-->
+                        <!--<div class="fl pull_page_up">上一页</div>-->
+                            <!--<ul>-->
+                                <!--<li class="on">1</li>-->
+                                <!--<li>2</li>-->
+                                <!--<li>3</li>-->
+                                <!--<li>4</li>-->
+                                <!--<li class="pull_page_df_btn">…</li>-->
+                                <!--<li>12</li>-->
+                            <!--</ul>-->
+                        <!--<div class="fl pull_page_down">下一页</div>-->
+                    <!--</div>-->
 
                     
                 </div>
