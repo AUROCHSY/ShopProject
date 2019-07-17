@@ -11,7 +11,7 @@ public interface EndPagesService {
 /*用户管理============================*/
     List<UserEntity> searchUser(String key);//根据用户名搜索用户
     List<UserEntity> showAllUser();//展示所有用户
-    int updateUser(String username,String sex,String email,String phone,int user_id);//更新用户信息
+    int updateUser(String username,String sex,String email,String phone,int user_state,int user_id);//更新用户信息
 //    int deleteUser(int user_id);//删除用户-不用做
 //    int deleteCart(int user_id);//删除购物车
 

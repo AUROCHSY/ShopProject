@@ -31,8 +31,8 @@ public class EndPagesServiceImpl implements EndPagesService {
 
     //更新用户信息
     @Override
-    public int updateUser(String username, String sex, String email, String phone, int user_id) {
-        return endpagesdao.updateUser(username, sex, email, phone, user_id);
+    public int updateUser(String username, String sex, String email, String phone,int user_state, int user_id) {
+        return endpagesdao.updateUser(username, sex, email, phone,user_state, user_id);
     }
 
 /*种类(目录)管理============================================*/

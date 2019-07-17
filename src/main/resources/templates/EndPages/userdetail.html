@@ -49,11 +49,17 @@
                                 <label class="text_center">电话:</label>
                                 <input name="phone" th:value="${u.phone}"></input>
                             </li>
+                            <li>
+                                <label class="text_center">允许登陆状态:</label>
+                                <!--<input name="user_state" th:value="${u.user_state}">-->
+                                <select name="user_state" th:switch="${u.user_state}" class="column_name_release" style="width:100px;">
+                                    <option th:case="0" th:selected="selected" value="0">允许登录</option>
+                                    <option th:case="1" th:selected="selected" value="1">禁止登录</option>
+                                </select>
+                            </li>
                             <button type="submit" name="" class="inputbutton" onclick="alert('修改成功');">保存</button>
                         </ul>
                         </form>
-                    </div>
-                </div>
-            </div>
+                </li>
 </body>
 </html>

@@ -158,8 +158,9 @@ public class EndPagesController {
         String sex = (String) request.getParameter("sex");
         String email = (String) request.getParameter("email");
         String phone = (String) request.getParameter("phone");
+        int user_state = Integer.parseInt(request.getParameter("user_state"));
 
-        int result = endpagesservice.updateUser(username, sex, email, phone, user_id);//更新用户信息
+        int result = endpagesservice.updateUser(username, sex, email, phone,user_state, user_id);//更新用户信息
 
         List<UserEntity> userlist = endpagesservice.showAllUser();//展示所有用户
         model.addAttribute("userlist", userlist);

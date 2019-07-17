@@ -19,8 +19,8 @@ public interface EndPagesDao {
     List<UserEntity> showAllUser();
 
     //更新用户信息
-    @Update(value="update demo.tb_user SET username=#{arg0},sex=#{arg1},email=#{arg2},phone=#{arg3} where user_id=#{arg4}")
-    int updateUser(String username,String sex,String email,String phone,int user_id);
+    @Update(value="update demo.tb_user SET username=#{arg0},sex=#{arg1},email=#{arg2},phone=#{arg3},user_state=#{arg4} where user_id=#{arg5}")
+    int updateUser(String username,String sex,String email,String phone,int user_state,int user_id);
 
     //根据商品id找到全部口味
 //    @Select(value = "select f.* from demo.tb_flavor_commodity fc" +
