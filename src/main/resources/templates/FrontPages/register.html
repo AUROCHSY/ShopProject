@@ -6,8 +6,25 @@
 	<title>注册</title>
 	<link rel="stylesheet" href="FrontPages/css/amazeui.min.css" />
 	<link href="FrontPages/css/dlstyle.css" rel="stylesheet" type="text/css">
-	<script src="FrontPages/js/jquery.min.js"></script>
-	<script src="FrontPages/js/amazeui.min.js"></script>
+	<script src="FrontPages/js/jquery.min.js" type="text/javascript"></script>
+	<script src="FrontPages/js/amazeui.min.js" type="text/javascript"></script>
+
+
+	<!--注册时需要通过'onblur事件'检测用户名是否已经存在-->
+	<script type="text/javascript">
+        function register() {
+            var username = $('#'+'username').val();
+            var url = "/register_username";
+            var params = {"username":username};
+            $.post(url, params, function (data, status) {
+                if (data==0){
+                    alert("该用户名已存在");
+				}
+            })
+        }
+	</script>
+
+
 </head>
 
 <body>
@@ -26,7 +43,8 @@
 					<div class="am-tab-panel am-active">
 						<form method="post" action="/register1" id="loginForm">
 							<div class="user-name">
-								<input type="text" name="username" id="username" placeholder="请输入用户名" required="true"> </div>
+								<input type="text" name="username" id="username" placeholder="请输入用户名" required="true"
+										th:onblur="'javascript:register()'"> </div>
 							<div class="user-pass">
 								<input type="password" name="password" id="password" placeholder="设置密码" required="true"> </div>
 							<div class="user-pass">
@@ -36,7 +54,7 @@
 								<div th:if="${ correct_username=='not_duplicated' and correct_username!=null }">
 									<script>
                                         alert('注册成功');
-                                        window.location.href="/login";
+                                        window.location.href="/";
 									</script>
 								</div>
 							</div>

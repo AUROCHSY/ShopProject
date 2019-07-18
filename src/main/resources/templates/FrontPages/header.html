@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>首页</title>
@@ -11,24 +11,31 @@
 <script src="js/amazeui.min.js"></script>
 </head>
 
-<!--<body onload="getUrl();">-->
 <body>
+
 <!--顶部导航条 -->
 <div class="am-container header">
   <ul class="message-l">
     <div class="topMessage">
-      <div class="menu-hd"> <a href="/" target="_top" class="h">亲，请登录</a> <a href="/register" target="_top">免费注册</a> </div>
-    </div>
+      <div class="menu-hd">
+
+        <!--<div th:if="${username!=null }">-->
+          <!--<a href="/person_index" target="_top" class="h" th:text="'hi!'+${username}"></a>-->
+        <!--</div>-->
+        <!--<div th:if="${username==null }">-->
+          <a href="/person_index" target="_top" class="h">亲，请登录</a>
+        <!--</div>-->
+        <a href="/register" target="_top">免费注册</a> </div></div>
   </ul>
   <ul class="message-r">
     <div class="topMessage home">
-      <div class="menu-hd"><a href="/index" target="_top" class="h">商城首页</a></div>
+      <div class="menu-hd"><a href="/shop_index" target="_top" class="h">商城首页</a></div>
     </div>
     <div class="topMessage my-shangcheng">
-      <div class="menu-hd MyShangcheng"><a href="person/index.html" target="_top">个人中心</a></div>
+      <div class="menu-hd MyShangcheng"><a href="/person_index" target="_top">个人中心</a></div>
     </div>
     <div class="topMessage mini-cart">
-      <div class="menu-hd"><a id="mc-menu-hd" href="FrontPages/shopcart.html" target="_top"><span>购物车</span></a></div>
+      <div class="menu-hd"><a id="mc-menu-hd" href="/shopcart_index" target="_top"><span>购物车</span></a></div>
     </div>
 
 </ul>
@@ -39,7 +46,8 @@
     <li><img src="images/logobig1.png" /></li>
   </div>
   <div class="search-bar pr">
-    <form action="/search" target=_parent><!--因为该部分代码是作为一个独立html文件在<iframe>中引入的，所以为了将返回页全面显示需要这样设置target-->
+    <!--target="_parent"可以将页面跳转到新的页面，而不是在html中嵌套。。。。-->
+    <form action="/search" target="_parent">
       <input id="searchInput" name="index_none_header_sysc" type="text" placeholder="搜索" autocomplete="off">
       <input id="ai-topsearch" class="submit am-btn" value="搜索" index="1" type="submit">
     </form>

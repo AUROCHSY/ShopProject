@@ -21,6 +21,6 @@ public class UserEntity {
     private String email;       //邮箱
     private Timestamp regtime;  //注册时间
     private Timestamp datetime; //最近登陆时间
-    private int user_state;
+    private int user_state;     //用户状态
 
 }

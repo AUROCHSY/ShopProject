@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <html>
 
 	<head>
@@ -7,20 +8,20 @@
 
 		<title>订单管理</title>
 
-		<link href="../css/admin.css" rel="stylesheet" type="text/css">
-		<link href="../css/amazeui.css" rel="stylesheet" type="text/css">
+		<link href="FrontPages/css/admin.css" rel="stylesheet" type="text/css">
+		<link href="FrontPages/css/amazeui.css" rel="stylesheet" type="text/css">
 
-		<link href="../css/personal.css" rel="stylesheet" type="text/css">
-		<link href="../css/orstyle.css" rel="stylesheet" type="text/css">
+		<link href="FrontPages/css/personal.css" rel="stylesheet" type="text/css">
+		<link href="FrontPages/css/orstyle.css" rel="stylesheet" type="text/css">
 
-		<script src="../js/jquery.min.js"></script>
-		<script src="../js/amazeui.js"></script>
+		<script src="FrontPages/js/jquery.min.js"></script>
+		<script src="FrontPages/js/amazeui.js"></script>
 
 	</head>
 
 	<body>
 		
-<iframe src="../header.html" width="100%" height="150px" frameborder="0"></iframe>
+<iframe src="FrontPages/header.html" width="100%" height="150px" frameborder="0"></iframe>
 
 		<div class="nav-table">
 			<div class="long-title"><span class="all-goods">全部分类</span></div>
@@ -77,48 +78,42 @@
 										</div>
 									</div>
 
-									<div class="order-main">
+									<div class="order-main" th:each="order:${order}">
 										<div class="order-list">
-											
-											
-										
+
 											<!--不同状态订单-->
 											<div class="order-status3">
 												<div class="order-title">
-													<div class="dd-num">订单编号：<a href="javascript:;">1601430</a></div>
-													<span>成交时间：2015-12-20</span>
+													<div class="dd-num">订单编号：<a href="javascript:;" th:text="${order.order_id}"></a></div>
+													<span>成交时间：<span th:text="${order.ordertime}"></span>
+													</span>
 												</div>
 												<div class="order-content">
 													<div class="order-left">
-                                                    
-                                                    
-                                                    <!--fffffffff-->
-                                                    
-                                                    
+
 														<ul class="item-list">
 															<li class="td td-item">
 																<div class="item-pic">
 																	<a href="#" class="J_MakePoint">
-																		<img src="../images/kouhong.jpg_80x80.jpg" class="itempic J_ItemImg">
+																		<img th:src="'FrontPages/images/'+${order.img}" class="itempic J_ItemImg">
 																	</a>
 																</div>
 																<div class="item-info">
 																	<div class="item-basic-info">
 																		<a href="#">
-																			<p>【百草味-东北松子】坚果零食特产手剥开口原味干果 </p>
+																			<p th:text="${order.cname}"> </p>
 																			<p class="info-little">口味：原味 </p>
 																		</a>
 																	</div>
 																</div>
 															</li>
 															<li class="td td-price">
-																<div class="item-price">
-																	333.00
+																<div class="item-price" th:text="${order.totalprice}">
 																</div>
 															</li>
 															<li class="td td-number">
 																<div class="item-number">
-																	<span>×</span>2
+																	<span>×</span>1
 																</div>
 															</li>
 															<li class="td td-operation">
@@ -133,8 +128,7 @@
 													</div>
 													<div class="order-right">
 														<li class="td td-amount">
-															<div class="item-amount">
-																合计：676.00
+															<div class="item-amount" th:text="${order.totalprice}">
 																
 															</div>
 														</li>
@@ -207,7 +201,7 @@
 																<div class="item-info">
 																	<div class="item-basic-info">
 																		<a href="#">
-																			<p>【百草味-东北松子】坚果零食特产手剥开口原味干果 </p>
+																			<p ></p>
 																			<p class="info-little">口味：原味 </p>
 																		</a>
 																	</div>
@@ -220,7 +214,7 @@
 															</li>
 															<li class="td td-number">
 																<div class="item-number">
-																	<span>×</span>2
+																	<span>×</span>1
 																</div>
 															</li>
 															<li class="td td-operation">

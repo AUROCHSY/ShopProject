@@ -1,282 +1,450 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>购物车页面</title>
+	<link href="FrontPages/css/amazeui.css" rel="stylesheet" type="text/css"/>
+	<link href="FrontPages/css/demo.css" rel="stylesheet" type="text/css"/>
+	<link href="FrontPages/css/cartstyle.css" rel="stylesheet" type="text/css"/>
+	<link href="FrontPages/css/optstyle.css" rel="stylesheet" type="text/css"/>
+	<script type="text/javascript" src="FrontPages/js/jquery.js"></script>
 
-		<title>购物车页面</title>
 
-		<link href="css/amazeui.css" rel="stylesheet" type="text/css" />
-		<link href="css/demo.css" rel="stylesheet" type="text/css" />
-		<link href="css/cartstyle.css" rel="stylesheet" type="text/css" />
-		<link href="css/optstyle.css" rel="stylesheet" type="text/css" />
+	<!--以下两个方法是复选框checkbox的方法，其中也需要联动其它函数（如局部刷新更改总选中数量，总价格等）-->
+	<!--单个checkbox选中或非选中事件，需要对总选中商品件数 和 选中商品的总价格进行局部刷新变更 2019.7.5 14:20 （已完成）-->
+	<script type="text/javascript">
+		function single_check(index) {
+			var check_box_id = 'check_box_'+index;
+			var count = parseInt($("#J_SelectedItemsCount").text());
+			var total_price = parseFloat($("#total_price").text());
+			var quantity = parseFloat($('#'+'quantity_'+index).val());
+			var promotional_price = parseFloat($('#'+'promotional_price_'+index).text());
 
-		<script type="text/javascript" src="js/jquery.js"></script>
+			if($('#'+check_box_id).attr("checked") == "checked") { //选中的话，数量加1，总价增加
+			    count = count + 1;
+                total_price = total_price + quantity*promotional_price;
+			}
+			else { //取消选中的话，数量减1，总价减少
+			    count = count - 1;
+                total_price = total_price - quantity*promotional_price;
+			}
+            $("#J_SelectedItemsCount").text(count.toString());
+            $("#total_price").text(total_price.toString());
+        }
+	</script>
 
-	</head>
+	<!--checkbox的全选与全不选 2019.7.5 （已完成）-->
+	<script type="text/javascript">
+        var isCheckAll = false;
+		function all_check() {
+		    if(isCheckAll) {
+		        $("input.check").each(function () {
+					this.checked = false;
+                })
+				isCheckAll = false;
+			} else {
+                $("input.check").each(function () {
+                    this.checked = true;
+                })
+                isCheckAll = true;
+			}
+            update_count_and_total_price();
+		}
+	</script>
 
-	<body>
 
-					<iframe src="header.html" width="100%" height="120px" frameborder="0" scrolling="no"></iframe>
+	<!--商品数量的更改：减1，加1，自定义数量    以下5个方法，前3个是更改数量，后两个是联动方法（用于局部刷新更改价格，数量，总价等）  -->
+	<!--1 商品数量减1 2019.7.4 19:30 在后台根据session和传递的参数对数据库相应数据进行商品数量减1 （已完成）-->
+	<script type="text/javascript">
+        function quantity_minus(index, cname, flavor_name) {
+            var old_quantity = parseInt( $('#'+'quantity_'+index).val() );
+            if(old_quantity == 1) { //说明不能再进行自减，此时要保持数量等于一 （非常重要，购物车里所有物品的数量至少为1）
+                alert("商品数量不能再减少了哟~");
+                $('#'+'quantity_'+index).val(old_quantity+1);
+                return;
+			}
 
-			<!--购物车 -->
-			<div class="concent">
-				<div id="cartTable">
-					<div class="cart-table-th">
-						<div class="wp">
-							<div class="th th-chk">
-								<div id="J_SelectAll1" class="select-all J_SelectAll">
+            var url = "/quantity_minus";
+            var params = {'cname':cname,"flavor_name":flavor_name};
+            $.post(url, params, function (data, status) {
+                price_change(index);
+                update_count_and_total_price();
+                if(status == "error") {
+                    alert("quantity_minus方法出错!!!")
+                }
+            })
+        }
+	</script>
+
+	<!--2 商品数量加1 2019.7.4 21:00 在后台根据session和传递的参数对数据库相应数据进行商品数量加1 （已完成）-->
+	<script type="text/javascript">
+        function quantity_plus(index, cname, flavor_name) {
+            var url = "/quantity_plus";
+            var params = {'cname':cname,"flavor_name":flavor_name};
+            $.post(url, params, function (data, status) {
+                price_change(index);
+                update_count_and_total_price();
+                if(status == "error") {
+                    alert("quantity_plus方法出错!!!")
+                }
+            })
+        }
+	</script>
+
+
+	<!--3 商品数量自定义 2019.7.4 19:30 在后台根据session和传递的参数对数据库相应数据进行商品数量更改 2019.7.5 10:40（已完成）-->
+	<script type="text/javascript">
+        function quantity_change(index, cname, flavor_name) {
+            var new_quantity = $('#'+'quantity_'+index).val();
+            var url = "/quantity_change";
+            var params = {"new_quantity":new_quantity, 'cname':cname,"flavor_name":flavor_name};
+            $.post(url, params, function (data, status) {
+                price_change(index);
+                update_count_and_total_price();
+                if(statu=="error") {
+                    alert("quantity_change方法出错!!!");
+                }
+            })
+        }
+	</script>
+
+	<!--上述商品数量更改的3个方法的联动方法，要跟新改动数量的商品的总价以及所有商品的总价 2019.7.5 11:10 （已完成）-->
+	<script type="text/javascript">
+        function price_change(index) { //这是改变每个商品后面的价格
+            var promotional_price = parseFloat($('#'+'promotional_price_'+index).text());
+            var new_quantity = parseInt($('#'+'quantity_'+index).val());
+            var single_total_price_id = 'single_total_price_'+index;
+            var single_total_price = (promotional_price * new_quantity).toFixed(2)
+            $('#'+single_total_price_id).text(single_total_price.toString());
+        }
+	</script>
+
+	<!--这是页面中总选中商品数量 和 选中商品价格中和 全部的更新，和price_change不同 2019.7.5 15:00（已完成）-->
+	<script type="text/javascript">
+		function update_count_and_total_price() {
+		    var count = 0;
+		    var total_price = 0.0;
+            $("input.check").each(function () {
+                if(this.checked) {
+                    var index = this.id.substring(10); //形如check_box_1，从第10个字符开始截取
+                    var quantity = parseFloat($('#'+'quantity_'+index).val());
+                    var promotional_price = parseFloat($('#'+'promotional_price_'+index).text());
+
+                    count = count + 1;
+                    total_price = total_price + quantity * promotional_price;
+                }
+            })
+            $("#J_SelectedItemsCount").text(count.toString());
+            $("#total_price").text(total_price.toString());
+        }
+	</script>
+
+	<!--用户点击购物车中的商品图片，跳转到相应商品的detail页面（2019.7.4 11:30 已完成）-->
+	<script type="text/javascript">
+        function goto_detail(cname) {  //将商品的名称cname传递到Controller进行查询，界面跳转等
+            var url = "/goto_detail";
+            var params = {'cname':cname};
+            $.post(url, params, function (data, status) {
+                window.location.href = "/goto_detail2";
+                if(status=="error") {
+                    alert("goto_detail方法出错!!!");
+                }
+            })
+        }
+	</script>
+
+	<!--用户进行购物车商品删除操作（一件商品的删除）（2019.7.4 17:00 已完成）-->
+	<script type="text/javascript">
+        function deleteCommodity(index, cname, flavor_name) {
+            var message = confirm("确认删除该商品？");
+            if(message==true) {
+                var url = "/deleteCommodity";
+                var params = {'cname':cname, 'flavor_name':flavor_name};
+                $.post(url, params, function (data, status) {
+                    $('#'+'check_box_'+index).each(function () {
+                        this.checked = false;
+                    })
+                    $('#'+'row_'+index).hide(); //隐藏，隐藏之前必须把checked值赋为false，不然会一直持续选中的效果
+                    update_count_and_total_price();
+                    if(status=="error") {
+                        alert("deleteCommodity方法出错!!!");
+                    }
+                })
+
+            }
+        }
+	</script>
+
+	<!--对用户选中的商品进行删除（多件商品的删除） 2019.7.6 13:00 （已完成）-->
+	<script type="text/javascript">
+        function delete_checked_commodities() { //将用户选中的商品进行删除 传递到Controller的参数是字符串，Controlloer再通过split方法进行切割，转成数组
+            var num_of_checked = 0; //记录选中的商品件数，如果等于0则提示用户未选中商品
+            var cnames = new Array();
+            var flavor_names = new Array();
+            var index_list = new Array();
+            $("input.check").each(function () {
+                if(this.checked == true) {
+                    num_of_checked = num_of_checked + 1;
+                    var index = this.id.substring(10); //形如check_box_1，从第10个字符开始截取
+                    index_list.push(index);
+                    cnames.push($('#'+'cname_'+index).text());
+                    flavor_names.push($('#'+'flavor_name_'+index).text().substring(3));
+                }
+            })
+
+			if(num_of_checked == 0) { //用户没有选中任何商品
+                alert("未选中任何商品");
+                return;
+			}
+
+            var message = confirm("确认删除该商品？");
+            if(message==true) {
+                var url = "/deleteCheckedCommodities";
+                var cnames_string = cnames.toString();
+                var flavor_names_string = flavor_names.toString();
+                var params = {"cnames_string":cnames_string, "flavor_names_string":flavor_names_string};
+
+                $.post(url, params, function (data, status) {
+                    for(var i=0;i<index_list.length;i++) { //对删除的物品进行隐藏
+                        $('#'+'check_box_'+index_list[i]).each(function () {
+                            this.checked = false;
+                        })
+                        $('#'+'row_'+index_list[i]).hide();
+                    }
+                    update_count_and_total_price(); //更新选中商品的总件数和价格
+                    if(status=="error") {
+                        alert("deleteCheckedCommodity方法出错!!!");
+                    }
+                })
+            }
+
+        }
+	</script>
+
+
+	<!--最后点击结算按钮的事件：将所有选中的checkbox商品对应的cname和flavor_name这2个参数传到后台，后台再根据session中存储的user_id，可以确定用户需要结算的商品-->
+	<script type="text/javascript">
+		function pay() { //传递到Controller的参数是字符串，Controlloer再通过split方法进行切割，转成数组
+            var num_of_checked = 0; //记录选中的商品件数，如果等于0则提示用户未选中商品
+		    var cnames = new Array();
+            var flavor_names = new Array();
+            var index_list = [];
+            $("input.check").each(function () {
+                if(this.checked == true) {
+                    num_of_checked = num_of_checked + 1;
+                    var index = this.id.substring(10); //形如check_box_1，从第10个字符开始截取
+                    index_list.push(index);
+                    cnames.push($('#'+'cname_'+index).text());
+                    flavor_names.push($('#'+'flavor_name_'+index).text().substring(3));
+				}
+            })
+
+            if(num_of_checked == 0) { //用户没有选中任何商品
+                alert("未选中任何商品");
+                return;
+            }
+
+            var url = "/pay";
+            var cnames_string = cnames.toString();
+            var flavor_names_string = flavor_names.toString();
+            var total_price = $("#total_price").text();
+            var params = {"cnames_string":cnames_string, "flavor_names_string":flavor_names_string, "total_price":total_price};
+            $.post(url, params, function (data, status) {
+                window.location.href = "/pay2";
+                if(status=="error") {
+                    alert("pay方法出错!!!");
+                }
+            })
+
+        }
+	</script>
+
+
+</head>
+
+
+<body>
+<iframe src="FrontPages/header.html" width="100%" height="120px" frameborder="0" scrolling="no">
+</iframe>
+<!--购物车 -->
+
+<div class="concent">
+	<div id="cartTable">
+		<div class="cart-table-th">
+			<div class="wp">
+				<div class="th th-chk">
+					<div id="J_SelectAll1" class="select-all J_SelectAll">
+					</div>
+				</div>
+				<div class="th th-item">
+					<div class="td-inner">
+						商品信息
+					</div>
+				</div>
+				<div class="th th-price">
+					<div class="td-inner">
+						单价
+					</div>
+				</div>
+				<div class="th th-amount">
+					<div class="td-inner">
+						数量
+					</div>
+				</div>
+				<div class="th th-sum">
+					<div class="td-inner">
+						金额
+					</div>
+				</div>
+				<div class="th th-op">
+					<div class="td-inner">
+						操作
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="clear">
+		</div>
+		<tr class="item-list">
+			<div class="bundle bundle-last ">
+				<div class="bundle-hd">
+					<div class="bd-promos">
+						<span class="list-change theme-login">编辑</span>
+					</div>
+				</div>
+				<div class="clear">
+				</div>
+				<div class="bundle-main">
+					<!--加一个indexInc，自增，用于设置动态id-->
+					<ul th:id="row_+${indexInc.index}" class="item-content clearfix" th:each="CL, indexInc:${cartList}">
+						<li class="td td-chk">
+							<div class="cart-checkbox ">
+								<input class="check" th:id="check_box_+${indexInc.index}" name="items[]" th:value="${CL.cname}" type="checkbox" th:onclick="'javascript:single_check(\''+${indexInc.index}+'\');'" >
+
+								<!--th:onclick="'javascript:editUser('+${prod.id}+');'"     错误-->
+								<!--th:onclick="'javascript:editUser(\''+${prod.id}+'\');'"    正确-->
+
+							</div>
+						</li>
+						<li class="td td-item">
+							<div class="item-pic">
+								<a href="javascript:void(0);" target="_blank" class="J_MakePoint" data-point="tbcart.8.12">
+									<img th:src=" 'FrontPages/img/'+${CL.img} "  th:onclick="'javascript:goto_detail(\''+${CL.cname}+'\');'" width="80" height="80" class="itempic J_ItemImg">
+								</a>
+							</div>
+							<div class="item-info">
+								<div class="item-basic-info">
+									<a href="javascript:void(0);" target="_blank" class="item-title J_MakePoint" data-point="tbcart.8.11">
+										<div th:id="cname_+${indexInc.index}" th:text="${CL.cname}" th:onclick="'javascript:goto_detail(\''+${CL.cname}+'\');'" ></div>
+									</a>
+								</div>
+								<div class="item-props">
+									<span class="sku-line">
+										<div th:id="flavor_name_+${indexInc.index}" th:text="'口味：'+${CL.flavor_name}"></div>
+									</span>
+								</div>
+							</div>
+						</li>
+
+						<li class="td td-price">
+							<div class="item-price price-promo-promo">
+								<div class="price-content">
+									<div class="price-line">
+										<em class="price-original">
+											<div th:text="${CL.original_price}"></div>
+										</em>
+									</div>
+									<div class="price-line">
+										<em class="J_Price price-now" tabindex="0">
+											<div th:id="promotional_price_+${indexInc.index}" th:text="${CL.promotional_price}" ></div>
+										</em>
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="td td-amount">
+							<div class="amount-wrapper ">
+								<div class="item-amount ">
+
+									<div class="sl">
+										<input id="minus" class="min am-btn" name="" type="button" value="-"
+											   th:onclick="'javascript:quantity_minus(\''+${indexInc.index}+'\', \''+${CL.cname}+'\', \''+${CL.flavor_name}+'\');'"  >
+										<input th:id="quantity_+${indexInc.index}" class="text_box" name="" type="text" th:value="${CL.quantity}"  style="width:30px;"
+											   th:onblur="'javascript:quantity_change(\''+${indexInc.index}+'\', \''+${CL.cname}+'\', \''+${CL.flavor_name}+'\');'" />
+										<input id="plus" class="add am-btn" name="" type="button" value="+"
+											   th:onclick="'javascript:quantity_plus(\''+${indexInc.index}+'\', \''+${CL.cname}+'\', \''+${CL.flavor_name}+'\');'" />
+								</div>
+
 
 								</div>
 							</div>
-							<div class="th th-item">
-								<div class="td-inner">商品信息</div>
+						</li>
+						<li class="td td-sum">
+							<div class="td-inner">
+								<em tabindex="0" class="J_ItemSum number">
+									<!--<div th:id="single_total_price_+${indexInc.index}" th:text="${CL.promotional_price} * ${CL.quantity}"></div>-->
+									<div th:id="single_total_price_+${indexInc.index}" th:text="${#numbers.formatDecimal(CL.promotional_price, 0, 2)} * ${CL.quantity}"></div>
+								</em>
 							</div>
-							<div class="th th-price">
-								<div class="td-inner">单价</div>
+						</li>
+						<li class="td td-op">
+							<div class="td-inner">
+								<a href="#" data-point-url="#" class="delete" th:onclick="'javascript:deleteCommodity(\''+${indexInc.index}+'\', \''+${CL.cname}+'\' , \''+${CL.flavor_name}+'\');'" >
+									删除
+								</a>
 							</div>
-							<div class="th th-amount">
-								<div class="td-inner">数量</div>
-							</div>
-							<div class="th th-sum">
-								<div class="td-inner">金额</div>
-							</div>
-							<div class="th th-op">
-								<div class="td-inner">操作</div>
-							</div>
-						</div>
-					</div>
-					<div class="clear"></div>
+						</li>
+					</ul>
 
-					<tr class="item-list">
-						<div class="bundle  bundle-last ">
-							<div class="bundle-hd">
-								<div class="bd-promos">
-									<span class="list-change theme-login">编辑</span>
-								</div>
-							</div>
-							<div class="clear"></div>
-							<div class="bundle-main">
-								<ul class="item-content clearfix">
-									<li class="td td-chk">
-										<div class="cart-checkbox ">
-											<input class="check" id="J_CheckBox_170037950254" name="items[]" value="170037950254" type="checkbox">
-											
-										</div>
-									</li>
-									<li class="td td-item">
-										<div class="item-pic">
-											<a href="detail.html" target="_blank" class="J_MakePoint" data-point="tbcart.8.12">
-												<img src="images/02.jpg" width="80" height="80" class="itempic J_ItemImg"></a>
-										</div>
-										<div class="item-info">
-											<div class="item-basic-info">
-												<a href="detail.html" target="_blank" class="item-title J_MakePoint" data-point="tbcart.8.11">良品铺子 手剥松子218g 坚果炒货 巴西松子</a>
-											</div>
-										
-											<div class="item-props">
-												<span class="sku-line">口味：原味</span>
-											</div>
-											
-										</div>
-									</li>
-									<li class="td td-price">
-										<div class="item-price price-promo-promo">
-											<div class="price-content">
-												<div class="price-line">
-													<em class="price-original">78.00</em>
-												</div>
-												<div class="price-line">
-													<em class="J_Price price-now" tabindex="0">39.00</em>
-												</div>
-											</div>
-										</div>
-									</li>
-									<li class="td td-amount">
-										<div class="amount-wrapper ">
-											<div class="item-amount ">
-												<div class="sl">
-													<input class="min am-btn" name="" type="button" value="-" />
-													<input class="text_box" name="" type="text" value="3" style="width:30px;" />
-													<input class="add am-btn" name="" type="button" value="+" />
-												</div>
-											</div>
-										</div>
-									</li>
-									<li class="td td-sum">
-										<div class="td-inner">
-											<em tabindex="0" class="J_ItemSum number">117.00</em>
-										</div>
-									</li>
-									<li class="td td-op">
-										<div class="td-inner">
-											<a href="javascript:;" data-point-url="#" class="delete">
-                  删除</a>
-										</div>
-									</li>
-								</ul>
-								
-	<ul class="item-content clearfix">
-									<li class="td td-chk">
-										<div class="cart-checkbox ">
-											<input class="check" id="J_CheckBox_170037950254" name="items[]" value="170037950254" type="checkbox">
-											
-										</div>
-									</li>
-									<li class="td td-item">
-										<div class="item-pic">
-											<a href="#" target="_blank" class="J_MakePoint" data-point="tbcart.8.12">
-												<img src="images/02.jpg" width="80" height="80"  class="itempic J_ItemImg"></a>
-										</div>
-										<div class="item-info">
-											<div class="item-basic-info">
-												<a href="#" target="_blank" class="item-title J_MakePoint" data-point="tbcart.8.11">良品铺子 手剥松子218g 坚果炒货 巴西松子</a>
-											</div>
-										
-											<div class="item-props">
-												<span class="sku-line">口味：辛辣</span>
-											</div>
-											
-										</div>
-									</li>
-									<li class="td td-price">
-										<div class="item-price price-promo-promo">
-											<div class="price-content">
-												<div class="price-line">
-													<em class="price-original">78.00</em>
-												</div>
-												<div class="price-line">
-													<em class="J_Price price-now" tabindex="0">39.00</em>
-												</div>
-											</div>
-										</div>
-									</li>
-									<li class="td td-amount">
-										<div class="amount-wrapper ">
-											<div class="item-amount ">
-												<div class="sl">
-													<input class="min am-btn" name="" type="button" value="-" />
-													<input class="text_box" name="" type="text" value="3" style="width:30px;" />
-													<input class="add am-btn" name="" type="button" value="+" />
-												</div>
-											</div>
-										</div>
-									</li>
-									<li class="td td-sum">
-										<div class="td-inner">
-											<em tabindex="0" class="J_ItemSum number">117.00</em>
-										</div>
-									</li>
-									<li class="td td-op">
-										<div class="td-inner">
-											<a href="javascript:;" data-point-url="#" class="delete">
-                  删除</a>
-										</div>
-									</li>
-								</ul>							
-							</div>
-						</div>
-					</tr>
-					<div class="clear"></div>
-				</div>
-				<div class="clear"></div>
 
-				<div class="float-bar-wrapper">
-					<div id="J_SelectAll2" class="select-all J_SelectAll">
-						<div class="cart-checkbox">
-							<input class="check-all check" id="J_SelectAllCbx2" name="select-all" value="true" type="checkbox">
-							<label for="J_SelectAllCbx2"></label>
-						</div>
-						<span>全选</span>
-					</div>
-					<div class="operations">
-						<a href="#" hidefocus="true" class="deleteAll">删除</a>
-					</div>
-					<div class="float-bar-right">
-						<div class="amount-sum">
-							<span class="txt">已选商品</span>
-							<em id="J_SelectedItemsCount">0</em><span class="txt">件</span>
-							<div class="arrow-box">
-								<span class="selected-items-arrow"></span>
-								<span class="arrow"></span>
-							</div>
-						</div>
-						<div class="price-sum">
-							<span class="txt">合计:</span>
-							<strong class="price">¥<em id="J_Total">0.00</em></strong>
-						</div>
-						<div class="btn-area">
-							<a href="pay.html" id="J_Go" class="submit-btn submit-btn-disabled" aria-label="请注意如果没有选择宝贝，将无法结算">
-								<span>结&nbsp;算</span></a>
-						</div>
-					</div>
 
-				</div>
-
-				
-
-			</div>
-
-			<!--操作页面-->
-
-			<div class="theme-popover-mask"></div>
-
-			<div class="theme-popover">
-				<div class="theme-span"></div>
-				<div class="theme-poptit h-title">
-					<a href="javascript:;" title="关闭" class="close">×</a>
-				</div>
-				<div class="theme-popbod dform">
-					<form class="theme-signin" name="loginform" action="" method="post">
-
-						<div class="theme-signin-left">
-
-							<li class="theme-options">
-								<div class="cart-title">颜色：</div>
-								<ul>
-									<li class="sku-line selected">12#川南玛瑙<i></i></li>
-									<li class="sku-line">10#蜜橘色+17#樱花粉<i></i></li>
-								</ul>
-							</li>
-							<li class="theme-options">
-								<div class="cart-title">包装：</div>
-								<ul>
-									<li class="sku-line selected">包装：裸装<i></i></li>
-									<li class="sku-line">两支手袋装（送彩带）<i></i></li>
-								</ul>
-							</li>
-							<div class="theme-options">
-								<div class="cart-title number">数量</div>
-								<dd>
-									<input class="min am-btn am-btn-default" name="" type="button" value="-" />
-									<input class="text_box" name="" type="text" value="1" style="width:30px;" />
-									<input class="add am-btn am-btn-default" name="" type="button" value="+" />
-									<span  class="tb-hidden">库存<span class="stock">1000</span>件</span>
-								</dd>
-
-							</div>
-							<div class="clear"></div>
-							<div class="btn-op">
-								<div class="btn am-btn am-btn-warning">确认</div>
-								<div class="btn close am-btn am-btn-warning">取消</div>
-							</div>
-
-						</div>
-						<div class="theme-signin-right">
-							<div class="img-info">
-								<img src="images/kouhong.jpg_80x80.jpg" />
-							</div>
-							<div class="text-info">
-								<span class="J_Price price-now">¥39.00</span>
-								<span id="Stock" class="tb-hidden">库存<span class="stock">1000</span>件</span>
-							</div>
-						</div>
-
-					</form>
 				</div>
 			</div>
-		
-        
-        			<iframe src="footer.html" width="100%" height="150px" frameborder="0" scrolling="no"></iframe>
-	</body>
+		</tr>
+		<div class="clear">
+		</div>
+	</div>
+	<div class="clear">
+	</div>
+	<div class="float-bar-wrapper">
+		<!--<div id="J_SelectAll2" class="select-all J_SelectAll">-->
+		<div id="J_SelectAll2" class="select-all">
+			<!--<div class="cart-checkbox">-->
+				<!--<input class="check-all" id="J_SelectAllCbx2" name="select-all" value="true" type="checkbox" onclick="all_check()">-->
+				<!--<label for="J_SelectAllCbx2"></label>-->
+			<!--</div>-->
+			<a href="javascript:void(0)" onclick="all_check()">&nbsp&nbsp&nbsp&nbsp&nbsp全选</a>
+		</div>
+		<!--<div class="operations">-->
+		<div class="select-all">
+			<a href="javascript:void(0)" th:onclick="'javascript:delete_checked_commodities()'" class="deleteAll">删除</a>
+		</div>
+		<div class="float-bar-right">
+			<div class="amount-sum">
+				<span class="txt">已选商品</span>
+				<em id="J_SelectedItemsCount">0</em>
+				<span class="txt">件</span>
+				<div class="arrow-box">
+					<span class="selected-items-arrow"></span>
+					<span class="arrow"></span>
+				</div>
+			</div>
+			<div class="price-sum">
+				<span class="txt">合计:</span>
+				<strong class="price">¥<em id="total_price">0.00</em></strong>
+			</div>
+			<div class="btn-area">
+				<a href="javascript:void(0)" onclick="pay()" id="J_Go" class="submit-btn submit-btn-disabled" aria-label="请注意如果没有选择宝贝，将无法结算">
+					<span>结&nbsp;算</span></a>
+			</div>
+		</div>
+	</div>
+</div>
 
+<iframe src="FrontPages/footer.html" width="100%" height="150px" frameborder="0" scrolling="no">
+</iframe>
+</body>
+</html>ing="no">
+</iframe>
+</body>
 </html>

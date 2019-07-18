@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <html>
 
 	<head>
@@ -7,17 +8,17 @@
 
 		<title>个人资料</title>
 
-		<link href="../css/admin.css" rel="stylesheet" type="text/css">
-		<link href="../css/amazeui.css" rel="stylesheet" type="text/css">
+		<link href="FrontPages/css/admin.css" rel="stylesheet" type="text/css">
+		<link href="FrontPages/css/amazeui.css" rel="stylesheet" type="text/css">
 
-		<link href="../css/personal.css" rel="stylesheet" type="text/css">
-		<link href="../css/infstyle.css" rel="stylesheet" type="text/css">
-		<script src="../js/jquery.min.js"></script>
-		<script src="../js/amazeui.js"></script>			
+		<link href="FrontPages/css/personal.css" rel="stylesheet" type="text/css">
+		<link href="FrontPages/css/infstyle.css" rel="stylesheet" type="text/css">
+		<script src="FrontPages/js/jquery.min.js"></script>
+		<script src="FrontPages/js/amazeui.js"></script>
 	</head>
 
 	<body>
-		<iframe src="../header.html" width="100%" height="150px" frameborder="0"></iframe>
+		<iframe src="FrontPages/header.html" width="100%" height="150px" frameborder="0"></iframe>
             <div class="nav-table">
 					   <div class="long-title"><span class="all-goods">全部分类</span></div>
 					   <div class="nav-cont">
@@ -42,13 +43,13 @@
 
 							<div class="filePic">
 								<input type="file" class="inputPic" allowexts="gif,jpeg,jpg,png,bmp" accept="image/*">
-								<img class="am-circle am-img-thumbnail" src="../images/getAvatar.do.jpg" alt="" />
+								<img class="am-circle am-img-thumbnail" src="FrontPages/images/getAvatar.do.jpg" alt="" />
 							</div>
 
 							<p class="am-form-help">头像</p>
 
 							<div class="info-m">
-								<div><b>用户名：<i>小叮当</i></b></div>
+								<div><b>用户名：<i th:text="${username}"></i></b></div>
 								
 							</div>
 						</div>
@@ -66,7 +67,7 @@
 								</div>
 
 								<div class="am-form-group">
-									<label for="user-name" class="am-form-label">姓名</label>
+									<label for="user-name2" class="am-form-label">姓名</label>
 									<div class="am-form-content">
 										<input type="text" id="user-name2" placeholder="name">
                                          
@@ -164,7 +165,7 @@
 
 				</div>
 				<!--底部-->
-				<iframe src="../footer.html" width="100%" height="150px" frameborder="0" scrolling="no"></iframe>
+				<iframe src="FrontPages/footer.html" width="100%" height="150px" frameborder="0" scrolling="no"></iframe>
 			</div>
 
 			
@@ -176,15 +177,15 @@
 					<li class="person">
 						<p><i class="am-icon-newspaper-o"></i>个人资料</p>
 						<ul>
-							<li> <a href="information.html">个人信息</a></li>
+							<li> <a href="/information">个人信息</a></li>
 							<li> <a href="safety.html">安全设置</a></li>
-							<li> <a href="address.html">地址管理</a></li>
+							<li> <a href="/address">地址管理</a></li>
 						</ul>
 					</li>
 					<li class="person">
 						<p><i class="am-icon-balance-scale"></i>我的交易</p>
 						<ul>
-							<li><a href="order.html">订单管理</a></li>
+							<li><a href="/order">订单管理</a></li>
 							<li> <a href="change.html">退款售后</a></li>
 							<li> <a href="comment.html">评价商品</a></li>
 						</ul>

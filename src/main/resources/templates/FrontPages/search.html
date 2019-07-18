@@ -1,19 +1,33 @@
 ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-		<title>搜索页面</title>
+	<title>搜索页面</title>
 
-		<link href="FrontPages/css/amazeui.css" rel="stylesheet" type="text/css" />
-		<link href="FrontPages/css/admin.css" rel="stylesheet" type="text/css" />
-		<link href="FrontPages/css/demo.css" rel="stylesheet" type="text/css" />
-	   <link href="FrontPages/css/seastyle.css" rel="stylesheet" type="text/css" />
+	<link href="FrontPages/css/amazeui.css" rel="stylesheet" type="text/css" />
+	<link href="FrontPages/css/admin.css" rel="stylesheet" type="text/css" />
+	<link href="FrontPages/css/demo.css" rel="stylesheet" type="text/css" />
+   <link href="FrontPages/css/seastyle.css" rel="stylesheet" type="text/css" />
 
-		<script type="text/javascript" src="js/jquery-1.7.min.js"></script>
-		<script type="text/javascript" src="js/script.js"></script>
-	</head>
+	<script type="text/javascript" src="FrontPages/js/jquery-1.7.min.js"></script>
+	<script type="text/javascript" src="FrontPages/js/script.js"></script>
+	<script src="FrontPages/js/amazeui.min.js"></script>
+
+	<!--用户点击购物车中的商品图片，跳转到相应商品的detail页面（2019.7.4 11:30 已完成）-->
+	<script type="text/javascript">
+        function get_detail(cname) {  //将商品的名称cname传递到Controller进行查询，界面跳转等
+            var url = "/goto_detail";
+            var params = {'cname':cname};
+            $.post(url, params, function (data, status) {
+                window.location.href = "/goto_detail2";
+                if(status=="error") {
+                    alert("goto_detail方法出错!!!");
+                }
+            })
+        }
+	</script>
+</head>
 
 	<body>
 			<iframe src="FrontPages/header.html" width="100%" height="120px" frameborder="0"></iframe>
@@ -22,20 +36,18 @@
            <div class="search">
 			<div class="search-list">
 			<div class="nav-table">
-					   <div class="long-title"><span class="all-goods">全部分类</span></div>
-					   <div class="nav-cont">
-							<ul>
-								<li class="index"><a href="#">首页</a></li>
-                                <li class="qc"><a href="#">闪购</a></li>
-                                <li class="qc"><a href="#">限时抢</a></li>
-                                <li class="qc"><a href="#">团购</a></li>
-                                <li class="qc last"><a href="#">大包装</a></li>
-							</ul>
-						   
-						</div>
+				   <div class="long-title"><span class="all-goods">全部分类</span></div>
+				   <div class="nav-cont">
+						<ul>
+							<li class="index"><a href="#">首页</a></li>
+							<li class="qc"><a href="#">闪购</a></li>
+							<li class="qc"><a href="#">限时抢</a></li>
+							<li class="qc"><a href="#">团购</a></li>
+							<li class="qc last"><a href="#">大包装</a></li>
+						</ul>
+
+					</div>
 			</div>
-			
-				
 					<div class="am-g am-g-fixed">
 						<div class="am-u-sm-12 am-u-md-12">
 	                  	<div class="theme-popover">														
@@ -43,7 +55,6 @@
 								<p class="title font-normal">
 									<span class="fl" th:utext="${search_key}"></span>
 									<span class="total fl" th:utext="'搜索到 '+${result_num}+' 件相关商品'"></span>
-									<!--<span class="total fl" >搜索到<strong class="num">997</strong>件相关商品</span>-->
 								</p>
 								<div class="clear"></div>
 								<li class="select-result">
@@ -55,10 +66,10 @@
 								</li>
 								<div class="clear"></div>
 								<li class="select-list">
-									<dl id="select1" th:each="sr : ${search_result}">
-										<dt class="am-badge am-round">品牌</dt>
-
-										<div class="dd-conent">
+									<dl id="select1">
+										<dt class="am-badge am-round">品牌</dt>	
+									
+										 <div class="dd-conent">
 											<dd class="select-all selected"><a href="#">全部</a></dd>
 											<dd><a href="#">百草味</a></dd>
 											<dd><a href="#">良品铺子</a></dd>
@@ -66,7 +77,8 @@
 											<dd><a href="#">楼兰蜜语</a></dd>
 											<dd><a href="#">口水娃</a></dd>
 											<dd><a href="#">考拉兄弟</a></dd>
-										</div>
+										 </div>
+						
 									</dl>
 								</li>
 								<li class="select-list">
@@ -95,19 +107,13 @@
 								<div class="clear"></div>
 
 								<ul class="am-avg-sm-2 am-avg-md-3 am-avg-lg-4 boxes">
-
-
-
-
-									<li style=" width:206px; height:306px"  th:each="sc : ${search_result}">
+									<li style=" width:206px; height:306px" th:each="sc:${search_result}">
 										<div class="i-pic limit">
-											
-											<!--<a href="detail.html"><img src="FrontPages/images/imgsearch1.jpg" /></a>-->
-											<a href="detail.html"><img th:src="'FrontPages/img/'+${sc.img}" /></a>
-											<p class="title fl" th:text="${sc.cname}"></p>
-											<p class="price fl" th:utext="'<b>￥</b><strong>'+${sc.promotional_price}+'</strong>'">
-											</p>
-											
+											<a href="javascript:void(0)">
+												<img th:src="'FrontPages/img/'+${sc.img} " th:onclick="'javascript:get_detail(\''+${sc.cname}+'\');'"/>
+												<p class="title fl" th:text="${sc.cname}"></p>
+												<p class="price fl" th:utext="'<b>￥</b><strong>'+${sc.promotional_price}+'</strong>'"></p>
+											</a>
 										</div>
 									</li>
 								</ul>
@@ -118,22 +124,20 @@
 							<ul class="am-pagination am-pagination-right">
 								<li class="am-disabled"><a href="#">首页</a></li>
 								<li><a href="#">上一页</a></li>
-								<li><a href="#">下一页</a></li>							<li><a href="#">尾页</a></li>
+								<li><a href="#">下一页</a></li>
+								<li><a href="#">尾页</a></li>
 							</ul>
-
 						</div>
 					</div>
-					
 				</div>
-
 			</div>
 
-		<!--引导 -->
+		<!--引导-->
 		<div class="navCir">
 			<li><a href="home2.html"><i class="am-icon-home "></i>首页</a></li>
 			<li><a href="sort.html"><i class="am-icon-list"></i>分类</a></li>
-			<li><a href="shopcart.html"><i class="am-icon-shopping-basket"></i>购物车</a></li>	
-			<li><a href="person/index.html"><i class="am-icon-user"></i>我的</a></li>					
+			<li><a href="shopcart.html"><i class="am-icon-shopping-basket"></i>购物车</a></li>
+			<li><a href="person/index.html"><i class="am-icon-user"></i>我的</a></li>
 		</div>
 
 		

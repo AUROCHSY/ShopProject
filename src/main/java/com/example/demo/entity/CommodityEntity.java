@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 
 import lombok.Data;
+
 import java.sql.Timestamp;
 
 /*
@@ -14,8 +15,8 @@ public class CommodityEntity {
     private int second_category_id;   //外键
     private int brand_id;   //外键
 
-    private String cname;//商品名
-    private double promotional_price;//促销价
+    private String cname;
+    private double promotional_price;
     private double original_price;
     private String description;
     private String img;
@@ -26,6 +27,7 @@ public class CommodityEntity {
     private String product_specificat;
     private String expiration_date;
     private String usage;
+    private String standard_number;
     private String storage_method;
     private String storage_number;
     private String license_number;

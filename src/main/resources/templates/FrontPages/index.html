@@ -8,12 +8,27 @@
 	<link href="FrontPages/css/admin.css" rel="stylesheet" type="text/css" />
 	<link href="FrontPages/css/demo.css" rel="stylesheet" type="text/css" />
 	<link href="FrontPages/css/hmstyle.css" rel="stylesheet" type="text/css" />
-	<script src="FrontPages/js/jquery.min.js"></script>
+	<script type="text/javascript" src="FrontPages/js/jquery.min.js"></script>
 	<script src="FrontPages/js/amazeui.min.js"></script>
+
+	<script type="text/javascript">
+        //Ajax
+        function get_detail(commodity_id) {
+            // alert(commodity_id);
+            var url="/detail1";
+            var params={'commodity_id':commodity_id};
+            $.post(url, params, function (date,status) {
+                window.location.href="/detail2";
+                if (status=="error"){
+                    alert("error!");
+                }
+            })
+        }
+	</script>
 </head>
 
 <body>
-<iframe id="headerIframe" src="FrontPages/header.html" width="100%" height="120px" frameborder="0" scrolling="no"></iframe>
+<iframe src="FrontPages/header.html" width="100%" height="120px" frameborder="0" scrolling="no"></iframe>
 <div class="banner">
 	<!--轮播 -->
 	<div class="am-slider am-slider-default scoll" data-am-flexslider id="demo-slider-0">
@@ -147,7 +162,7 @@
 										<div class="area-bg">
 											<div class="menu-srot">
 												<div class="brand-side">
-													<dl class="dl-sort" th:each="sc : ${SecondCategory}">
+													<dl class="dl-sort">
 														<dd><a rel="nofollow" title="花颜巧语 " target="_blank" href="#" ><span  class="red" >花颜巧语 </span></a></dd>
 														<dd><a rel="nofollow" title="糖衣小屋" target="_blank" href="#" ><span >糖衣小屋</span></a></dd>
 														<dd><a rel="nofollow" title="卡拉迪克  " target="_blank" href="#" ><span  class="red" >卡拉迪克  </span></a></dd>
@@ -170,7 +185,7 @@
 										<div class="area-bg">
 											<div class="menu-srot">
 												<div class="brand-side">
-													<dl class="dl-sort" th="">
+													<dl class="dl-sort">
 														<dd><a rel="nofollow" title="歌芙品牌旗舰店" target="_blank" href="#" ><span  class="red" >歌芙品牌旗舰店</span></a></dd>
 														<dd><a rel="nofollow" title="爱丝蓝内衣厂" target="_blank" href="#" ><span >爱丝蓝内衣厂</span></a></dd>
 														<dd><a rel="nofollow" title="炫点服饰" target="_blank" href="#" ><span >炫点服饰</span></a></dd>
@@ -254,7 +269,7 @@
 		<!--小导航 -->
 		<div class="am-g am-g-fixed smallnav">
 			<div class="am-u-sm-3">
-				<a href="/sort"><img src="FrontPages/images/navsmall.jpg" />
+				<a href="sort.html"><img src="FrontPages/images/navsmall.jpg" />
 					<div class="title">商品分类</div>
 				</a>
 			</div>
@@ -295,7 +310,8 @@
 </div>
 <div class="shopMainbg">
 	<div class="shopMain" id="shopmain">
-		<!--今日推荐 -->
+
+	<!--今日推荐 -->
 		<div class="am-g am-g-fixed recommendation">
 			<div class="clock am-u-sm-3">
 			<img src="FrontPages/images/2016.png "></img>
@@ -331,8 +347,8 @@
 
 	</div>
 	<div class="clear "></div>
-	<!--热门活动 -->
 
+	<!--热门活动 -->
 	<div class="am-container activity ">
 		<div class="shopTitle ">
 			<h4>活动</h4>
@@ -391,117 +407,29 @@
 	</div>
 	<div class="clear "></div>
 
-
-
-
-
+	<!--最新商品 	-->
 	<div class="am-container ">
 		<div class="shopTitle ">
 			<h4>最新商品</h4>
 
 			<span class="more ">
-                    <a class="more-link " href="/search">更多美味</a>
+                    <a class="more-link " href="/search ">更多美味</a>
                         </span>
 		</div>
 	</div>
 	<div class="am-g am-g-fixed flood method3 ">
 		<ul class="am-thumbnails ">
-			<li>
+			<li  th:each="sc:${sort_result}">
 				<div class="list ">
-					<a href="/detail">
-						<img src="FrontPages/images/cp.jpg " />
-						<div class="pro-title ">萨拉米 1+1小鸡腿</div>
-						<span class="e-price ">￥29.90</span>
+					<a href="javascript:void(0)">
+						<img th:src="'FrontPages/img/'+${sc.img} " th:onclick="'javascript:get_detail(\''+${sc.commodity_id}+'\');'"/>
+						<div class="pro-title " th:text="${sc.cname}"></div>
+						<span class="e-price " th:text="${sc.promotional_price}"></span>
 					</a>
 				</div>
 			</li>
-			<li>
-				<div class="list ">
-					<a href="# ">
-						<img src="FrontPages/images/cp2.jpg " />
-						<div class="pro-title ">ZEK 原味海苔</div>
-						<span class="e-price ">￥8.90</span>
-					</a>
-				</div>
-			</li>
-			<li>
-				<div class="list ">
-					<a href="# ">
-						<img src="FrontPages/images/cp.jpg " />
-						<div class="pro-title ">萨拉米 1+1小鸡腿</div>
-						<span class="e-price ">￥29.90</span>
-					</a>
-				</div>
-			</li>
-			<li>
-				<div class="list ">
-					<a href="# ">
-						<img src="FrontPages/images/cp2.jpg " />
-						<div class="pro-title ">ZEK 原味海苔</div>
-						<span class="e-price ">￥8.90</span>
-					</a>
-				</div>
-			</li>
-			<li>
-				<div class="list ">
-					<a href="# ">
-						<img src="FrontPages/images/cp.jpg " />
-						<div class="pro-title ">萨拉米 1+1小鸡腿</div>
-						<span class="e-price ">￥29.90</span>
-					</a>
-				</div>
-			</li>
-			<li>
-				<div class="list ">
-					<a href="# ">
-						<img src="FrontPages/images/cp2.jpg " />
-						<div class="pro-title ">ZEK 原味海苔</div>
-						<span class="e-price ">￥8.90</span>
-					</a>
-				</div>
-			</li>
-			<li>
-				<div class="list ">
-					<a href="# ">
-						<img src="FrontPages/images/cp.jpg " />
-						<div class="pro-title ">萨拉米 1+1小鸡腿</div>
-						<span class="e-price ">￥29.90</span>
-					</a>
-				</div>
-			</li>
-			<li>
-				<div class="list ">
-					<a href="# ">
-						<img src="FrontPages/images/cp2.jpg " />
-						<div class="pro-title ">ZEK 原味海苔</div>
-						<span class="e-price ">￥8.90</span>
-					</a>
-				</div>
-			</li>
-			<li>
-				<div class="list ">
-					<a href="# ">
-						<img src="FrontPages/images/cp.jpg " />
-						<div class="pro-title ">萨拉米 1+1小鸡腿</div>
-						<span class="e-price ">￥29.90</span>
-					</a>
-				</div>
-			</li>
-			<li>
-				<div class="list ">
-					<a href="# ">
-						<img src="FrontPages/images/cp2.jpg " />
-						<div class="pro-title ">ZEK 原味海苔</div>
-						<span class="e-price ">￥8.90</span>
-					</a>
-				</div>
-			</li>
-
 		</ul>
-
 	</div>
-
-
 </div>
 </div>
 </div>
@@ -509,12 +437,9 @@
 
 <iframe src="FrontPages/footer.html " width="100% " height="150px " frameborder="0 "></iframe>
 </body>
-<script>
-//	function getUrl() {
-	alert("hi");
-	console.log("here");
-//	var headerSrc=window.parent.document.getElementById("headerIframe").contentWindow.location.href;
-//	console.log("hello"+headerSrc);
-//	}
-</script>
+
+
+
+
+
 </html>

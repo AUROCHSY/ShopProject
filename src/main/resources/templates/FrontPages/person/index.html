@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 	<head>
 		<meta charset="utf-8">
@@ -7,16 +7,16 @@
 
 		<title>个人中心</title>
 
-		<link href="../css/admin.css" rel="stylesheet" type="text/css">
-		<link href="../css/amazeui.css" rel="stylesheet" type="text/css">
-		<link href="../css/personal.css" rel="stylesheet" type="text/css">
-		<link href="../css/vipstyle.css" rel="stylesheet" type="text/css">
-		<script src="../js/jquery.min.js"></script>
-		<script src="../js/amazeui.js"></script>
+		<link href="FrontPages/css/admin.css" rel="stylesheet" type="text/css">
+		<link href="FrontPages/css/amazeui.css" rel="stylesheet" type="text/css">
+		<link href="FrontPages/css/personal.css" rel="stylesheet" type="text/css">
+		<link href="FrontPages/css/vipstyle.css" rel="stylesheet" type="text/css">
+		<script src="FrontPages/js/jquery.min.js"></script>
+		<script src="FrontPages/js/amazeui.js"></script>
 	</head>
 
 	<body>
-		<iframe src="../header.html" width="100%" height="150px" frameborder="0"></iframe>
+		<iframe src="FrontPages/header.html" width="100%" height="150px" frameborder="0"></iframe>
 		<div class="nav-table">
 			<div class="long-title"><span class="all-goods">全部分类</span></div>
 			<div class="nav-cont">
@@ -39,15 +39,15 @@
 									</a>
 									<div class="m-baseinfo">
 										<a class="m-pic" href="information.html">
-											<img src="../images/getAvatar.do.jpg">
+											<img src="FrontPages/images/getAvatar.do.jpg">
 										</a>
 										<div class="m-info">
-											<em class="s-name">张小北</em>
+											<em class="s-name" th:text="${username}"></em>
 				<div class="safeText">
 												<div class="progressBar"><span style="left: -95px;" class="progress"></span></div>
 											</div>
 											<div class="m-address">
-												<a href="address.html" class="i-trigger">收货地址<i class="am-icon-angle-right" style="padding-left:5px ;"></i></a>
+												<a href="/address" class="i-trigger">收货地址<i class="am-icon-angle-right" style="padding-left:5px ;"></i></a>
 											</div>
 										</div>
 									</div>
@@ -67,7 +67,7 @@
 									
 									<p class="m-wallet">
 										<a href="wallet.html">
-											<em class="m-num">0.00</em>
+											<em class="m-num" th:text="${money}"></em>
 											<span class="m-title">账户余额</span>
 										</a>
 									</p>
@@ -89,61 +89,45 @@
 							<div class="m-order">
 								<div class="s-bar">
 									<i class="s-icon"></i>我的订单
-									<a class="i-load-more-item-shadow" href="order.html">全部订单</a>
+									<a class="i-load-more-item-shadow" href="/order">全部订单</a>
 								</div>
 								<ul>
-									<li><a href="order.html"><i><img src="../images/pay.png"/></i><span>待付款</span></a></li>
-									<li><a href="order.html"><i><img src="../images/send.png"/></i><span>待发货<em class="m-num">1</em></span></a></li>
-									<li><a href="order.html"><i><img src="../images/receive.png"/></i><span>待收货</span></a></li>
-									<li><a href="order.html"><i><img src="../images/comment.png"/></i><span>待评价<em class="m-num">3</em></span></a></li>
-									<li><a href="change.html"><i><img src="../images/refund.png"/></i><span>退换货</span></a></li>
+									<li><a href="order.html"><i><img src="FrontPages/images/pay.png"/></i><span>待付款</span></a></li>
+									<li><a href="order.html"><i><img src="FrontPages/images/send.png"/></i><span>待发货<em class="m-num">1</em></span></a></li>
+									<li><a href="order.html"><i><img src="FrontPages/images/receive.png"/></i><span>待收货</span></a></li>
+									<li><a href="order.html"><i><img src="FrontPages/images/comment.png"/></i><span>待评价<em class="m-num">3</em></span></a></li>
+									<li><a href="change.html"><i><img src="FrontPages/images/refund.png"/></i><span>退换货</span></a></li>
 								</ul>
-								<div class="orderContentBox">
+								<div class="orderContentBox"  th:each="order:${order}">
 									<div class="orderContent">
 										<div class="orderContentpic">
 											<div class="imgBox">
-												<a href="orderinfo.html"><img src="../images/01_small.jpg"></a>
+												<a href="/orderinfo"><img th:src="'FrontPages/images/'+${order.img}"/></a>
+												<!--th:src="'FrontPages/img/'+${search_result.img}"/-->
 											</div>
 										</div>
 										<div class="detailContent">
-											<a href="orderinfo.html" class="delivery">签收</a>
+											<a href="/orderinfo" class="delivery" th:switch="${order.state}">
+												<p th:case="3" >签收</p>
+												<p th:case="*" >未签收</p>
+											</a>
 											<div class="orderID">
-												<span class="time">2016-03-09</span>
-												<span class="splitBorder">|</span>
-												<span class="time">21:52:47</span>
+												<span class="time" th:text="${order.ordertime}"></span>
+												<!--<span class="splitBorder">|</span>-->
+												<!--<span class="time">21:52:47</span>-->
 											</div>
 											<div class="orderID">
 												<span class="num">共1件商品</span>
 											</div>
 										</div>
-										<div class="state">待评价</div>
-										<div class="price"><span class="sym">¥</span>23.<span class="sym">80</span></div>
-
-									</div>
-									<a href="javascript:void(0);" class="btnPay">再次购买</a>
-								</div>
-
-								<div class="orderContentBox">
-									<div class="orderContent">
-										<div class="orderContentpic">
-											<div class="imgBox">
-												<a href="orderinfo.html"><img src="../images/01_small.jpg"></a>
-											</div>
+										<div class="state" th:switch="${order.state}">
+											<p th:case="0" >待付款</p>
+											<p th:case="1" >待发货</p>
+											<p th:case="2" >待收货</p>
+											<p th:case="3" >待评价</p>
 										</div>
-										<div class="detailContent">
-											<a href="orderinfo.html" class="delivery">派件</a>
-											<div class="orderID">
-												<span class="time">2016-03-09</span>
-												<span class="splitBorder">|</span>
-												<span class="time">21:52:47</span>
-											</div>
-											<div class="orderID">
-												<span class="num">共2件商品</span>
-											</div>
-										</div>
-										<div class="state">已发货</div>
-										<div class="price"><span class="sym">¥</span>246.<span class="sym">50</span></div>
-
+										<!--<div class="price"><span class="sym">¥</span>23.<span class="sym">80</span></div>-->
+										<div class="price"><span class="sym" >¥</span><span class="sym" th:text="${order.totalprice}"></span></div>
 									</div>
 									<a href="javascript:void(0);" class="btnPay">再次购买</a>
 								</div>
@@ -227,7 +211,7 @@
 							<div class="new-goods-info">
 								<a class="shop-info" href="#">
 									<div class="face-img-panel">
-										<img src="../images/imgsearch1.jpg" alt="">
+										<img src="FrontPages/images/imgsearch1.jpg" alt="">
 									</div>
 									<span class="new-goods-num ">4</span>
 									<span class="shop-title">剥壳松子</span>
@@ -240,7 +224,7 @@
 
 				</div>
 				<!--底部-->
-				<iframe src="../footer.html" width="100%" height="150px" frameborder="0" scrolling="no"></iframe>
+				<iframe src="FrontPages/footer.html" width="100%" height="150px" frameborder="0" scrolling="no"></iframe>
 
 			</div>
 
@@ -252,15 +236,15 @@
 					<li class="person">
 						<p><i class="am-icon-newspaper-o"></i>个人资料</p>
 						<ul>
-							<li> <a href="information.html">个人信息</a></li>
+							<li> <a href="/information">个人信息</a></li>
 							<li> <a href="safety.html">安全设置</a></li>
-							<li> <a href="address.html">地址管理</a></li>
+							<li> <a href="/address">地址管理</a></li>
 						</ul>
 					</li>
 					<li class="person">
 						<p><i class="am-icon-balance-scale"></i>我的交易</p>
 						<ul>
-							<li><a href="order.html">订单管理</a></li>
+							<li><a href="/order">订单管理</a></li>
 							<li> <a href="change.html">退款售后</a></li>
 							<li> <a href="comment.html">评价商品</a></li>
 						</ul>
